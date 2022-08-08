@@ -37,7 +37,7 @@ public class DML {
     }
     
     //insertar a la base de datos, declarar nombre de base de datos + json con datos
-    public static void insertar(){
+    public static void insert(){
         try{
             declaracion = iniciar();
             resultado = declaracion.executeQuery("select * from prueba");

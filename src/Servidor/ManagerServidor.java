@@ -16,8 +16,11 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import org.json.simple.JSONObject;
 
-public class ManagerServidor {
+public class ManagerServidor extends BDManager{
+    
+    JsonManagerServer dataJson = new JsonManagerServer();
     
     public static void main(String[] args){
         
@@ -60,9 +63,9 @@ static class ClientHandler implements Runnable{
             String line = null;
             
             while ((line = in.readLine()) != null){
-                
                 System.out.printf("Dato enviado por el cliente: %s\n", line);
-                out.println("200");
+                out.println(action(line));
+                break;
             }
                 
             
@@ -82,4 +85,43 @@ static class ClientHandler implements Runnable{
         }
     }
 }
+
+
+    public static String action(String cadena){
+        String data = "404";
+        JSONObject JS = StringJson(cadena);
+        if (JS.get("action").equals("login")){
+            data = login(JS);
+        }    
+        else if (JS.get("action").equals("Registration")){
+            data = Registration(JS);
+        }
+
+        return data;
+    }
+    
+    
+    public static String login(JSONObject JS){
+        String resp = "404";
+        String nombre = JS.get("user").toString();
+        String passwd = JS.get("password").toString();
+        
+        if (verficiarLogin(nombre,passwd)){
+            resp = "200";
+        }
+                
+        return resp;
+    }
+
+    public static String Registration(JSONObject JS){
+        String resp = "404";
+        String nombre = JS.get("user").toString();
+        String passwd = JS.get("password").toString();
+        
+        if (Registration(nombre,passwd)){
+            resp = "200";
+        }
+                
+        return resp;
+    }
 }

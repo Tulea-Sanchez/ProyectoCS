@@ -42,4 +42,33 @@ public class JsonManagerCliente {
         
         return objetoJson;
     }
+    
+    public static JSONObject Jsonlogin (String user,String passwd){
+        
+        
+        JSONObject datos = new JSONObject();
+        datos.put("user", user);
+        datos.put("password", "passwd");
+        return datos;
+        
+               
+    }
+    
+    private static void extractJson(JSONObject employee) 
+    {
+        //Get employee object within list
+        JSONObject employeeObject = (JSONObject) employee.get("employee");
+         
+        //Get employee first name
+        String firstName = (String) employeeObject.get("firstName");    
+        System.out.println(firstName);
+         
+        //Get employee last name
+        String lastName = (String) employeeObject.get("lastName");  
+        System.out.println(lastName);
+         
+        //Get employee website name
+        String website = (String) employeeObject.get("website");    
+        System.out.println(website);
+    }
 }
