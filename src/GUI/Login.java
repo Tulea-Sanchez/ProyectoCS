@@ -14,6 +14,7 @@ public class Login extends javax.swing.JFrame {
     
     ManagerCliente cliente = new ManagerCliente();
     JsonManagerCliente JSC = new JsonManagerCliente();
+    Globales datos = new Globales();
     /**
      * Creates new form Login
      */
@@ -229,6 +230,7 @@ public class Login extends javax.swing.JFrame {
             GuiPrincipal();
         }
         else {mensajeError.setEnabled(true);
+        System.out.println("validacion error login");
         }
     }
     
@@ -243,6 +245,8 @@ public class Login extends javax.swing.JFrame {
         dispose();
         Principal v = new Principal();
         v.setVisible(true);
+        datos.setNombre(entryUsuario.getText());
+        v.globales(datos);
     }
     
     public void cerrarVentana(){

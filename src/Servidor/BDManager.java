@@ -27,7 +27,7 @@ public class BDManager extends JsonManagerServer{
     protected static final String driver = "com.mysql.jdbc.Driver";
     protected static final String user = "root";
     protected static final String passwd = "password123!";
-    protected static final String url = "jdbc:mysql://localhost:3306/proyectolbd?characterEncoding=utf8";
+    protected static final String url = "jdbc:mysql://localhost:3306/proyectocs?characterEncoding=utf8";
 
     
 
@@ -39,10 +39,8 @@ public class BDManager extends JsonManagerServer{
             con = (Connection) DriverManager.getConnection(url,user,passwd);
             System.out.println("Se establecio conexion con las BD");
         } catch (Exception e){
-            System.out.println("Error al conectar " + e);
+            System.out.println("Error al conectar main BDmanager" + e);
         }
-        
-        //System.out.println(verficiarLogin("admin","admin"));
     }
     
     public static Connection Conexion() {
@@ -52,10 +50,8 @@ public class BDManager extends JsonManagerServer{
         try {
             Class.forName(driver);
             con = (Connection) DriverManager.getConnection(url, user, passwd);
-            System.out.println("Se establecio conexion con las BD");
-
         } catch (Exception e) {
-            System.out.println("Error de conexion " + e);
+            System.out.println("Error de conexion() bdmanager " + e);
         }
         return con;
     }
@@ -95,19 +91,17 @@ public class BDManager extends JsonManagerServer{
             declaracion = iniciar();
             //declaracion corta para evitar inyeccion
             String Query = "select * from "+tabla+" where "+variable+" LIKE \""+dato.substring(0,3)+"%\"";
-            System.out.println(Query);
+
             //traer resultados del select
             resultado = declaracion.executeQuery(Query);
             resultado.next();
             do {
-                System.out.println(resultado.getString(variable));
                 if (dato.equalsIgnoreCase(resultado.getString(variable))){
                     conclucion = true;
                     break;
                     //insertar aca el codigo para la creacion del json y
                     //convertir la funcion a return json
                 }
-
             } while(resultado.next());
         } catch(Exception e){}
         
@@ -120,21 +114,16 @@ public class BDManager extends JsonManagerServer{
             declaracion = iniciar();
             //declaracion corta para evitar inyeccion
             String Query = "select * from usuarios where user LIKE \""+usuario.substring(0,3)+"%\"";
-            System.out.println(Query);
             //traer resultados del select
             resultado = declaracion.executeQuery(Query);
             resultado.next();
             do {
-                System.out.println("dato bd "+resultado.getString("user"));
-                System.out.println("dato usuario "+usuario);
-                System.out.println("dato bd "+resultado.getString("passwd"));
-                System.out.println("dato contra "+contra);
+                
                 if (usuario.equalsIgnoreCase(resultado.getString("user"))
                         && contra.equalsIgnoreCase(resultado.getString("passwd"))){
                     conclucion = true;
                     break;
-                    //insertar aca el codigo para la creacion del json y
-                    //convertir la funcion a return json
+                    
                 }
 
             } while(resultado.next());
@@ -152,11 +141,46 @@ public class BDManager extends JsonManagerServer{
             String Query = (String) "INSERT INTO USUARIOS (user,passwd) values ('"+user+"','"+pass+"')";  
             //insert de los datos
             int x = declaracion.executeUpdate(Query);
-            System.out.println("valor declaracion "+x);
             conclucion = true;
             
         } catch(Exception e){System.out.println(e);conclucion = false;}
         return conclucion;
     }
-
+    
+    public static ResultSet selectAll(String dato){
+        Conexion();
+        try{
+            declaracion = iniciar();
+            //declaracion corta para evitar inyeccion
+            String Query = "select * from "+dato;
+            //traer resultados del select
+            resultado = declaracion.executeQuery(Query);
+            resultado.next();
+            
+        } catch(Exception e){System.out.println(e);}
+        
+        return resultado;
+    }
+    
+    public static int countSelect(String dato){
+        Conexion();
+        int size = 0;
+        try{
+            declaracion = iniciar();
+            //declaracion corta para evitar inyeccion
+            String Query = "select * from "+dato;
+            //traer resultados del select
+            ResultSet rs  = declaracion.executeQuery(Query);
+            
+            while (rs.next()) {
+    	        //System.out.println(rs.getString("id_libro")+"\t\t"+rs.getString("nombre"));
+    	        size++;
+            }
+            
+        } catch(Exception e){System.out.println(e);}
+        
+        //System.out.println("Conteo: "+size);
+        return size;
+    }
+    
 }

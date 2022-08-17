@@ -15,12 +15,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.ResultSet;
 import java.util.Scanner;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import java.util.ArrayList; 
 
 public class ManagerServidor extends BDManager{
     
     JsonManagerServer dataJson = new JsonManagerServer();
+    public static Socket clientSocket;
+    public static PrintWriter out = null;
+    
     
     public static void main(String[] args){
         
@@ -44,7 +50,7 @@ public class ManagerServidor extends BDManager{
     }
     
 static class ClientHandler implements Runnable{
-    private final Socket clientSocket;
+    public Socket clientSocket;
     
     public ClientHandler(Socket socket){
         this.clientSocket = socket;
@@ -52,7 +58,7 @@ static class ClientHandler implements Runnable{
     
     @Override
     public void run(){
-        PrintWriter out = null;
+        //PrintWriter out = null;
         BufferedReader in = null;
         
         try {
@@ -64,8 +70,8 @@ static class ClientHandler implements Runnable{
             
             while ((line = in.readLine()) != null){
                 System.out.printf("Dato enviado por el cliente: %s\n", line);
-                out.println(action(line));
-                break;
+                action(line);
+                
             }
                 
             
@@ -87,21 +93,26 @@ static class ClientHandler implements Runnable{
 }
 
 
-    public static String action(String cadena){
-        String data = "404";
-        JSONObject JS = StringJson(cadena);
+    public static void action(String cadena){
+       
+        JSONObject JS = CreateString(cadena);
         if (JS.get("action").equals("login")){
-            data = login(JS);
+            login(JS);   
         }    
         else if (JS.get("action").equals("Registration")){
-            data = Registration(JS);
+            Registration(JS);
         }
-
-        return data;
+        else if (JS.get("action").equals("libros")){
+            sendLibros();  
+        }
+        else if (JS.get("action").equals("revistas")){
+            sendRevistas(); 
+        }
+        
     }
     
     
-    public static String login(JSONObject JS){
+    public static void login(JSONObject JS){
         String resp = "404";
         String nombre = JS.get("user").toString();
         String passwd = JS.get("password").toString();
@@ -109,11 +120,12 @@ static class ClientHandler implements Runnable{
         if (verficiarLogin(nombre,passwd)){
             resp = "200";
         }
-                
-        return resp;
+        
+        out.println(resp);
+        
     }
 
-    public static String Registration(JSONObject JS){
+    public static void Registration(JSONObject JS){
         String resp = "404";
         String nombre = JS.get("user").toString();
         String passwd = JS.get("password").toString();
@@ -122,6 +134,56 @@ static class ClientHandler implements Runnable{
             resp = "200";
         }
                 
-        return resp;
+        out.println(resp);
     }
+    
+    public static void sendLibros(){
+        ResultSet datos = selectAll("libros");
+        int size = countSelect("libros");
+        String js;
+        out.println(size);
+        try{
+            
+            do{
+               
+                String id = datos.getString("id_libro");
+                String nomb = datos.getString("nombre");
+                String edit = datos.getString("editorial");
+                String disp = datos.getString("disponible");
+                
+                js = CreateJsonLibros(id,nomb,edit,disp).toString();
+                
+                out.println(js);
+                
+            }while (datos.next());
+
+        }catch(Exception e){}
+        out.println("200");
+        
+    }
+    
+    public static void sendRevistas(){
+        ResultSet datos = selectAll("revistas");
+        int size = countSelect("revistas");
+        String js;
+        out.println(size);
+        try{
+            
+            do{
+               
+                String id = datos.getString("id_revista");
+                String nomb = datos.getString("nombre");
+                String edit = datos.getString("editorial");
+                String volum = datos.getString("volumen");
+                String disp = datos.getString("disponible");
+                js = CreateJsonRevista(id,nomb,edit,volum,disp).toString();
+                out.println(js);
+                
+            }while (datos.next());
+
+        }catch(Exception e){}
+        out.println("200");
+        
+    }
+        
 }

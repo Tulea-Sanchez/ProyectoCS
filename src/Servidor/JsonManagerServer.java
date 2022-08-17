@@ -23,14 +23,38 @@ public class JsonManagerServer {
     
     public static String CreateString(String user, String passwd) {
         
-        String json = "{\"user\":+user+,\"pass\":+passwd}"; 
+        String json = "{\"user\":"+user+",\"pass\":"+passwd+"}"; 
         
         return json;
     }
     
+    public static JSONObject CreateJsonLibros (String id,String nombre,String edi,String disp){
+        
+        
+        JSONObject datos = new JSONObject();
+        datos.put("id", id);
+        datos.put("nombre", nombre);
+        datos.put("editorial", edi);
+        datos.put("disponible", disp);
+        return datos;
+      
+    }
+    
+    public static JSONObject CreateJsonRevista (String id,String nombre,String edi,String volum,String disp){
+        
+        
+        JSONObject datos = new JSONObject();
+        datos.put("id", id);
+        datos.put("nombre", nombre);
+        datos.put("editorial", edi);
+        datos.put("volumen", volum);
+        datos.put("disponible", disp);
+        return datos;
+      
+    }
     
     
-    public static JSONObject StringJson(String cadena){
+    public static JSONObject CreateString(String cadena){
         
         JSONObject objetoJson = null;
         JSONParser parser = new JSONParser();
@@ -40,6 +64,8 @@ public class JsonManagerServer {
         
         return objetoJson;
     }
+    
+    
     
     public static JSONObject Jsonlogin (String user,String passwd){
         

@@ -16,7 +16,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import Json.*;
+import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 import org.json.simple.JSONObject;
 
 public class ManagerCliente extends JsonManagerCliente{
@@ -69,6 +70,38 @@ public class ManagerCliente extends JsonManagerCliente{
     
     public String send(String jsonString){
         String cadena = "";
+         
+        try (Socket socket = new Socket(host,port)){
+            
+            envio = new PrintWriter(socket.getOutputStream(),true);
+            Respuesta = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            
+            while(cadena!="200"){
+            envio.println(jsonString);
+            envio.flush(); // revisar que se envien todos los datos
+            cadena = Respuesta.readLine();
+            System.out.println("Respuesta del servidor: "+ Respuesta.readLine());
+            break;
+            }
+            
+            
+            
+        }catch(Exception e){System.out.println("except"+e);}
+        
+        return cadena;
+    }
+    
+    
+    public DefaultTableModel sendReceivesLibros(String jsonString){
+        Object [] fila=new Object[4];
+        String cadena = "";
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("EDITORIAL");
+        modelo.addColumn("ESTADO");
+        
         
         try (Socket socket = new Socket(host,port)){
             
@@ -76,7 +109,79 @@ public class ManagerCliente extends JsonManagerCliente{
             Respuesta = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
             
-            while(true){
+            envio.println(jsonString);
+            envio.flush(); // revisar que se envien todos los datos
+            
+            int size = Integer.parseInt(Respuesta.readLine());
+            
+            for (int i = 0;i<size;i++){
+                
+                cadena = Respuesta.readLine();
+                JSONObject js = StringJson(cadena);
+                System.out.println("sendReceives "+js);
+                fila[0]=js.get("id");
+                fila[1]=js.get("nombre");
+                fila[2]=js.get("editorial");
+                fila[3]="disponible";
+                modelo.addRow(fila); 
+
+            }
+            
+        }catch(Exception e){System.out.println("except sendRevistas"+e);}
+        
+        return modelo;
+    }
+    
+    public DefaultTableModel sendReceivesRevistas(String jsonString){
+        Object [] fila=new Object[5];
+        String cadena = "";
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("EDITORIAL");
+        modelo.addColumn("VOLUMEN");
+        modelo.addColumn("ESTADO");
+        
+        
+        try (Socket socket = new Socket(host,port)){
+            
+            envio = new PrintWriter(socket.getOutputStream(),true);
+            Respuesta = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            
+            envio.println(jsonString);
+            envio.flush(); // revisar que se envien todos los datos
+            
+            int size = Integer.parseInt(Respuesta.readLine());
+            
+            for (int i = 0;i<size;i++){
+                
+                cadena = Respuesta.readLine();
+                JSONObject js = StringJson(cadena);
+                fila[0]=js.get("id");
+                fila[1]=js.get("nombre");
+                fila[2]=js.get("editorial");
+                fila[3]=js.get("volumen");
+                fila[4]="disponible";
+                modelo.addRow(fila); 
+
+            }
+            
+        }catch(Exception e){System.out.println("except sendRevistas"+e);}
+        
+        return modelo;
+    }
+    
+    /*public Array send(String jsonString){
+        String cadena = "";
+        
+        try (Socket socket = new Socket(host,port)){
+            
+            envio = new PrintWriter(socket.getOutputStream(),true);
+            Respuesta = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            
+            while(Respuesta.readLine()!="200"){
             envio.println(jsonString);
             envio.flush(); // revisar que se envien todos los datos
             cadena = Respuesta.readLine();
@@ -88,9 +193,9 @@ public class ManagerCliente extends JsonManagerCliente{
         }catch(Exception e){System.out.println("except");}
         
         return cadena;
-    }
+    }*/
     
-    
+
     
     
     

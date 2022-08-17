@@ -35,8 +35,9 @@ public class JsonManagerCliente {
         JSONParser parser = new JSONParser();
         try{
         objetoJson = (JSONObject) parser.parse(cadena);
-        }catch(Exception e){}
+        }catch(Exception e){System.out.println("Jsonmancliente StringJson:"+e);}
         
+        //System.out.println(objetoJson.get("nombre")+"objeto");
         return objetoJson;
     }
     
@@ -50,6 +51,22 @@ public class JsonManagerCliente {
         return datos;        
     }
     
+    public JSONObject Jsonlibros(){
+        
+        
+        JSONObject datos = new JSONObject();
+        datos.put("action", "libros");
+        return datos;        
+    }
+    
+    public JSONObject JsonRevistas(){
+        
+        
+        JSONObject datos = new JSONObject();
+        datos.put("action", "revistas");
+        return datos;        
+    }
+    
     public JSONObject JsonRegistration (String user,String passwd){
         
         
@@ -60,21 +77,5 @@ public class JsonManagerCliente {
         return datos;        
     }
     
-    private void extractJson(JSONObject employee) 
-    {
-        //Get employee object within list
-        JSONObject employeeObject = (JSONObject) employee.get("employee");
-         
-        //Get employee first name
-        String firstName = (String) employeeObject.get("firstName");    
-        System.out.println(firstName);
-         
-        //Get employee last name
-        String lastName = (String) employeeObject.get("lastName");  
-        System.out.println(lastName);
-         
-        //Get employee website name
-        String website = (String) employeeObject.get("website");    
-        System.out.println(website);
-    }
+    
 }
