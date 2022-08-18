@@ -108,6 +108,22 @@ static class ClientHandler implements Runnable{
         else if (JS.get("action").equals("revistas")){
             sendRevistas(); 
         }
+        else if (JS.get("action").equals("id")){
+            System.out.println("id action");
+            idUsuario(JS); 
+        }
+        else if (JS.get("action").equals("alquilarLibros")){
+            System.out.println("alquilar");
+            statusAlquiler(JS); 
+        }
+        else if (JS.get("action").equals("alquilarRevistas")){
+            System.out.println("alquilar");
+            statusAlquiler(JS); 
+        }
+        else if (JS.get("action").equals("alquileres")){
+            System.out.println("alquileres");
+            sendAlquileres(JS); 
+        }
         
     }
     
@@ -124,6 +140,18 @@ static class ClientHandler implements Runnable{
         out.println(resp);
         
     }
+    
+    public static void idUsuario(JSONObject JS){
+        String resp = "404";
+        String nombre = JS.get("user").toString();
+        String passwd = JS.get("password").toString();
+        
+        resp = BuscaridUsuario(nombre,passwd);
+        
+        out.println(resp);
+        
+        
+    }
 
     public static void Registration(JSONObject JS){
         String resp = "404";
@@ -137,6 +165,17 @@ static class ClientHandler implements Runnable{
         out.println(resp);
     }
     
+    public static void statusAlquiler(JSONObject JS){
+        String resp = "404";
+        
+        
+        if (Alquilar(JS)){
+            resp = "200";
+        }
+        System.out.println("Resputado alquilar "+resp);
+        out.println(resp);
+    }
+    
     public static void sendLibros(){
         ResultSet datos = selectAll("libros");
         int size = countSelect("libros");
@@ -146,7 +185,7 @@ static class ClientHandler implements Runnable{
             
             do{
                
-                String id = datos.getString("id_libro");
+                String id = datos.getString("id");
                 String nomb = datos.getString("nombre");
                 String edit = datos.getString("editorial");
                 String disp = datos.getString("disponible");
@@ -171,7 +210,7 @@ static class ClientHandler implements Runnable{
             
             do{
                
-                String id = datos.getString("id_revista");
+                String id = datos.getString("id");
                 String nomb = datos.getString("nombre");
                 String edit = datos.getString("editorial");
                 String volum = datos.getString("volumen");
@@ -183,6 +222,42 @@ static class ClientHandler implements Runnable{
 
         }catch(Exception e){}
         out.println("200");
+        
+    }
+    
+    
+    public static void sendAlquileres(JSONObject JS){
+        ResultSet datos = selectAllalquileres("alquileres",JS.get("usuario").toString());
+        int size = countSelect("alquileres");
+        String js;
+        //System.out.println("alquileres send size antes ");
+        out.println(size);
+        //System.out.println("alquileres send id dspues size");
+        try{
+            
+            do{
+               
+                String id = datos.getString("id");
+                System.out.println("alquileres send id "+id);
+                String nomb = datos.getString("nombre");
+                String edit = datos.getString("editorial");
+                String volum = datos.getString("volumen");
+                String user = datos.getString("usuario");
+                String tip = datos.getString("tipo");
+                String fecha = datos.getString("fecha");
+                js = CreateJsonAlquileres(id,nomb,edit,volum,user,tip,fecha).toString();
+                out.println(js);
+                
+            }while (datos.next());
+
+        }catch(Exception e){String id = "";
+                String nomb = "";
+                String edit = "";
+                String volum = "";
+                String disp = "";
+                js = CreateJsonRevista(id,nomb,edit,volum,disp).toString();
+                out.println(js);}
+        //out.println("200");
         
     }
         

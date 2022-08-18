@@ -68,6 +68,55 @@ public class ManagerCliente extends JsonManagerCliente{
         return status;
     }
     
+    
+    public boolean alquilarSend(String jsonString){
+        
+        boolean status = false;
+        try (Socket socket = new Socket(host,port)){
+            
+            envio = new PrintWriter(socket.getOutputStream(),true);
+            Respuesta = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            
+            while(true){
+            envio.println(jsonString);
+            envio.flush(); // revisar que se envien todos los datos
+            if (Respuesta.readLine().equals("200")){status = true;}
+            //System.out.println("Respuesta del servidor:"+ Respuesta.readLine());
+            break;
+            }
+            
+            
+        }catch(Exception e){System.out.println("except"+e);}
+        
+        return status;
+    }
+    
+    public String idUsuario(String jsonString){
+        String status = "";
+        try (Socket socket = new Socket(host,port)){
+            
+            envio = new PrintWriter(socket.getOutputStream(),true);
+            Respuesta = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            
+            for(int i = 0;i<1;i++){
+                envio.println(jsonString);
+                envio.flush(); // revisar que se envien todos los datos
+                String x = "1";
+                if (Respuesta.readLine().equals("1")){status = x;}
+                //System.out.println("Respuesta del servidor:"+ Respuesta.readLine());
+                break;
+            }
+            
+         
+        }catch(Exception e){System.out.println("except");}
+        
+        return status;
+    }
+    
+    
+    
     public String send(String jsonString){
         String cadena = "";
          
@@ -81,7 +130,7 @@ public class ManagerCliente extends JsonManagerCliente{
             envio.println(jsonString);
             envio.flush(); // revisar que se envien todos los datos
             cadena = Respuesta.readLine();
-            System.out.println("Respuesta del servidor: "+ Respuesta.readLine());
+            //System.out.println("Respuesta del servidor: "+ Respuesta.readLine());
             break;
             }
             
@@ -116,18 +165,66 @@ public class ManagerCliente extends JsonManagerCliente{
             
             for (int i = 0;i<size;i++){
                 
+                
                 cadena = Respuesta.readLine();
                 JSONObject js = StringJson(cadena);
-                System.out.println("sendReceives "+js);
+                //System.out.println("sendReceives "+js);
+                if(js.get("disponible").equals("1")){
+                    fila[0]=js.get("id");
+                    fila[1]=js.get("nombre");
+                    fila[2]=js.get("editorial");
+                    fila[3]="disponible";
+                    modelo.addRow(fila); 
+                }
+            }
+            
+        }catch(Exception e){System.out.println("except sendRevistas"+e);}
+        
+        return modelo;
+    }
+    
+    public DefaultTableModel sendReceivesAlquileres(String jsonString){
+        Object [] fila=new Object[7];
+        String cadena = "";
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("EDITORIAL");
+        modelo.addColumn("VOLUMEN");
+        modelo.addColumn("USUARIO");
+        modelo.addColumn("TIPO");
+        modelo.addColumn("FECHA");
+        
+        try (Socket socket = new Socket(host,port)){
+            
+            envio = new PrintWriter(socket.getOutputStream(),true);
+            Respuesta = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            //System.out.println("sendReceivesalquileres "+jsonString);
+            envio.println(jsonString);
+            envio.flush(); // revisar que se envien todos los datos
+            
+            int size = Integer.parseInt(Respuesta.readLine());
+            System.out.println("sendReceives size"+size);
+            for (int i = 0;i<3;i++){
+                
+                
+                cadena = Respuesta.readLine();
+                System.out.println("sendReceives "+cadena);
+                JSONObject js = StringJson(cadena);
+                //System.out.println("sendReceives "+js);
                 fila[0]=js.get("id");
                 fila[1]=js.get("nombre");
                 fila[2]=js.get("editorial");
-                fila[3]="disponible";
+                fila[3]=js.get("volumen");
+                fila[4]=js.get("usuario");
+                fila[5]=js.get("tipo");
+                fila[6]=js.get("fecha");
                 modelo.addRow(fila); 
 
             }
             
-        }catch(Exception e){System.out.println("except sendRevistas"+e);}
+        }catch(Exception e){System.out.println("except sendalquileres"+e);}
         
         return modelo;
     }
@@ -158,13 +255,14 @@ public class ManagerCliente extends JsonManagerCliente{
                 
                 cadena = Respuesta.readLine();
                 JSONObject js = StringJson(cadena);
-                fila[0]=js.get("id");
-                fila[1]=js.get("nombre");
-                fila[2]=js.get("editorial");
-                fila[3]=js.get("volumen");
-                fila[4]="disponible";
-                modelo.addRow(fila); 
-
+                if(js.get("disponible").equals("1")){
+                    fila[0]=js.get("id");
+                    fila[1]=js.get("nombre");
+                    fila[2]=js.get("editorial");
+                    fila[3]=js.get("volumen");
+                    fila[4]="disponible";
+                    modelo.addRow(fila); 
+                }
             }
             
         }catch(Exception e){System.out.println("except sendRevistas"+e);}

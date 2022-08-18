@@ -3,13 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Servidor/JsonManagerServer.java</file>
             <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/GUI/Progress.java</file>
             <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/BD/DML.java</file>
+            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Cliente/Globales.java</file>
             <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Cliente/ManagerCliente.java</file>
             <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Servidor/BDManager.java</file>
+            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/GUI/Login.java</file>
+            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Servidor/JsonManagerServer.java</file>
+            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Herencia/Libro.java</file>
+            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/GUI/Registro.java</file>
             <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/GUI/Principal.java</file>
             <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Cliente/JsonManagerCliente.java</file>
+            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/GUI/Alquilar.java</file>
+            <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Herencia/Revista.java</file>
             <file>file:/C:/Users/Tulea4ever/Documents/NetBeansProjects/ClienteServidor/src/Servidor/ManagerServidor.java</file>
         </group>
     </open-files>

@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -131,6 +132,31 @@ public class BDManager extends JsonManagerServer{
         return conclucion;
     }
     
+    public static String BuscaridUsuario(String usuario,String contra){
+        Conexion();
+        String conclucion = "";
+        try{
+            declaracion = iniciar();
+            //declaracion corta para evitar inyeccion
+            String Query = "select * from usuarios ";
+            //traer resultados del select
+            resultado = declaracion.executeQuery(Query);
+            resultado.next();
+            do {
+                
+                if (usuario.equalsIgnoreCase(resultado.getString("user"))
+                        && contra.equalsIgnoreCase(resultado.getString("passwd"))){
+                    conclucion = resultado.getString("id");
+                    //System.out.println("resultado id "+ conclucion);
+                    break;
+                    
+                }
+
+            } while(resultado.next());
+        } catch(Exception e){}
+        return conclucion;
+    }
+    
     
     public static Boolean Registration(String user,String pass){
         Boolean conclucion = false;
@@ -147,12 +173,61 @@ public class BDManager extends JsonManagerServer{
         return conclucion;
     }
     
+    
+    public static Boolean Alquilar(JSONObject datos){
+        Boolean conclucion = false;
+        String tabla = "";
+        
+        if (datos.get("action").toString().equals("alquilarLibros")){tabla = "libros";}
+        else {tabla = "revistas";}
+        
+        try{
+            
+            declaracion = iniciar();
+            //declaracion corta para evitar inyeccion
+            
+            System.out.println("alquilar boolean bd server antes del querry");
+            String Query = (String) "INSERT INTO alquileres (id,nombre,usuario,editorial,volumen,tipo) "
+                    + "values ('"+Integer.parseInt(datos.get("cod_libro").toString())+"',"
+                    + "'"+datos.get("nombre").toString()+"',"  
+                    + "'"+datos.get("cod_usuario").toString()+"',"  
+                    + "'"+datos.get("editorial").toString()+"',"
+                    + "'"+datos.get("volumen").toString()+"',"
+                    + "'"+tabla+"')";  
+
+            //insert de los datos
+            declaracion.executeUpdate(Query);
+            
+            Query = (String) "UPDATE "+tabla+" SET disponible = false where id = "+Integer.parseInt(datos.get("cod_libro").toString());  
+            
+            declaracion.executeUpdate(Query);
+            conclucion = true;
+            
+        } catch(Exception e){System.out.println("Except alquilar bd server"+e);conclucion = false;}
+        return conclucion;
+    }
+    
     public static ResultSet selectAll(String dato){
         Conexion();
         try{
             declaracion = iniciar();
             //declaracion corta para evitar inyeccion
             String Query = "select * from "+dato;
+            //traer resultados del select
+            resultado = declaracion.executeQuery(Query);
+            resultado.next();
+            
+        } catch(Exception e){System.out.println(e);}
+        
+        return resultado;
+    }
+    
+    public static ResultSet selectAllalquileres(String dato,String usuario){
+        Conexion();
+        try{
+            declaracion = iniciar();
+            //declaracion corta para evitar inyeccion
+            String Query = "select * from alquileres where usuario = '"+usuario+"'";
             //traer resultados del select
             resultado = declaracion.executeQuery(Query);
             resultado.next();

@@ -222,12 +222,12 @@ public class Login extends javax.swing.JFrame {
 
     public void login(){
         
-        String nombre = entryUsuario.getText().toString();
-        String passwd = entryContraseña.getText().toString();
+        String nombre = entryUsuario.getText();
+        String passwd = entryContraseña.getText();
         JSONObject JS = JSC.Jsonlogin(nombre,passwd);
         //System.out.println("JS login "+cliente.sendSesion(JS.toString()));
         if(cliente.sendSesion(JS.toString())){
-            GuiPrincipal();
+            GuiPrincipal(JSC.JsonID(nombre,passwd));
         }
         else {mensajeError.setEnabled(true);
         System.out.println("validacion error login");
@@ -241,10 +241,11 @@ public class Login extends javax.swing.JFrame {
 
     }
     
-    public void GuiPrincipal(){
+    public void GuiPrincipal(JSONObject JS){
         dispose();
         Principal v = new Principal();
         v.setVisible(true);
+        datos.setCod_usuario(cliente.idUsuario(JS.toString()));
         datos.setNombre(entryUsuario.getText());
         v.globales(datos);
     }

@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.util.concurrent.TimeUnit;
-
+import Herencia.*;
 
 /**
  *
@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Principal extends javax.swing.JFrame {
     
+    private String codigoUsuario,action;
     private Globales datos = new Globales();
     ManagerCliente cliente = new ManagerCliente();
     JsonManagerCliente JSC = new JsonManagerCliente();
@@ -66,6 +67,8 @@ public class Principal extends javax.swing.JFrame {
         setForeground(new java.awt.Color(51, 51, 51));
         setName("Libreria"); // NOI18N
 
+        tabla.setBackground(new java.awt.Color(153, 204, 255));
+        tabla.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         tabla.setForeground(new java.awt.Color(0, 0, 0));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -121,8 +124,18 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tabla);
 
         buttonAlquilar.setText("ALQUILAR");
+        buttonAlquilar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonAlquilarMouseClicked(evt);
+            }
+        });
 
         buttonDevolver.setText("DEVOLVER");
+        buttonDevolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDevolverActionPerformed(evt);
+            }
+        });
 
         PanelPrincipal.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         PanelPrincipal.setLayer(buttonAlquilar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -134,8 +147,8 @@ public class Principal extends javax.swing.JFrame {
             PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 985, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 999, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonAlquilar)
                     .addComponent(buttonDevolver))
@@ -247,6 +260,11 @@ public class Principal extends javax.swing.JFrame {
         jLabel8.setText("ALQUILERES");
         jLabel8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel8.setVerifyInputWhenFocusTarget(false);
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
@@ -333,6 +351,18 @@ public class Principal extends javax.swing.JFrame {
         revistas();
     }//GEN-LAST:event_jLabel7MouseClicked
 
+    private void buttonAlquilarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAlquilarMouseClicked
+        alquilar(action);
+    }//GEN-LAST:event_buttonAlquilarMouseClicked
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        alquileres();
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void buttonDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDevolverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonDevolverActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -402,6 +432,7 @@ public void apagarPaneles(){
 public void globales(Globales x){
     datos = x;
     Label_nombre.setText(datos.getNombre());
+    
 }
 
 
@@ -410,14 +441,27 @@ public void libros(){
     borrarTabla();
     DefaultTableModel modelo = cliente.sendReceivesLibros(JSC.Jsonlibros().toString());
     tabla.setModel(modelo);
+    action = "libros";
 }
 
 public void revistas(){
    
     borrarTabla();
     DefaultTableModel modelo = cliente.sendReceivesRevistas(JSC.JsonRevistas().toString());
-    new Thread(fill(100));
+    //new Thread(fill(100));
     tabla.setModel(modelo);
+    action = "revistas";
+}
+
+
+public void alquileres(){
+   
+    borrarTabla();
+    DefaultTableModel modelo = cliente.sendReceivesAlquileres
+        (JSC.JsonAlquileres(Label_nombre.getText()).toString());
+    //new Thread(fill(100));
+    tabla.setModel(modelo);
+    
 }
 
 public void borrarTabla(){
@@ -457,7 +501,39 @@ public String fill(int tiempo){
         
         return "f";
     }
+
+public void alquilar(String action){
+    
+    try{
+        System.out.println(action);
+        int row = tabla.getSelectedRow();
         
+        if (action.equalsIgnoreCase("libros")){
+            Libro libro = new Libro(tabla.getModel().getValueAt(row, 0).toString(),
+                                    tabla.getModel().getValueAt(row, 1).toString(),
+                                    tabla.getModel().getValueAt(row, 2).toString());
+            
+            Alquilar alquiler = new Alquilar();
+            alquiler.setVisible(true);
+            alquiler.action(libro, datos.getNombre());
+            libros();
+        }
+        else{
+                Revista revista = new Revista(tabla.getModel().getValueAt(row, 0).toString(),
+                                    tabla.getModel().getValueAt(row, 1).toString(),
+                                    tabla.getModel().getValueAt(row, 2).toString(),
+                                    tabla.getModel().getValueAt(row, 3).toString());
+                
+                Alquilar alquiler = new Alquilar();
+                alquiler.setVisible(true);
+                alquiler.action(revista, datos.getNombre());
+                revistas();
+        }
+        
+    }catch(Exception e){}
+}
+
+
 
 }
 

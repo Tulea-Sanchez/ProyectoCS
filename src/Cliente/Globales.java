@@ -12,6 +12,7 @@ public class Globales {
     
     int usuario;
     String nombre;
+    String cod_usuario;
     
     public int getUsuario() {
         return usuario;
@@ -28,6 +29,15 @@ public class Globales {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getCod_usuario() {
+        return cod_usuario;
+    }
+
+    public void setCod_usuario(String cod_usuario) {
+        this.cod_usuario = cod_usuario;
+    }
+    
     
     
     

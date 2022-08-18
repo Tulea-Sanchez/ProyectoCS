@@ -53,6 +53,21 @@ public class JsonManagerServer {
       
     }
     
+    public static JSONObject CreateJsonAlquileres (String id,String nombre,String edi,String volum,String usuario,String tipo,String fecha){
+        
+        
+        JSONObject datos = new JSONObject();
+        datos.put("id", id);
+        datos.put("nombre", nombre);
+        datos.put("editorial", edi);
+        datos.put("volumen", volum);
+        datos.put("usuario", usuario);
+        datos.put("tipo", tipo);
+        datos.put("fecha", fecha);
+        return datos;
+      
+    }
+    
     
     public static JSONObject CreateString(String cadena){
         
