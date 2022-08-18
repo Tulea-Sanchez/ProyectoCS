@@ -33,7 +33,7 @@ public class ManagerServidor extends BDManager{
         ServerSocket server = null;
         
         try{
-            server = new ServerSocket(32000);
+            server = new ServerSocket(29000);
             server.setReuseAddress(true);
             
             while (true){
@@ -123,6 +123,10 @@ static class ClientHandler implements Runnable{
         else if (JS.get("action").equals("alquileres")){
             System.out.println("alquileres");
             sendAlquileres(JS); 
+        }
+        else if (JS.get("action").equals("devolver")){
+            System.out.println("devolver");
+            sendDevolver(JS); 
         }
         
     }
@@ -228,7 +232,7 @@ static class ClientHandler implements Runnable{
     
     public static void sendAlquileres(JSONObject JS){
         ResultSet datos = selectAllalquileres("alquileres",JS.get("usuario").toString());
-        int size = countSelect("alquileres");
+        int size = countSelectAlquileres("alquileres",JS.get("usuario").toString());
         String js;
         //System.out.println("alquileres send size antes ");
         out.println(size);
@@ -258,6 +262,16 @@ static class ClientHandler implements Runnable{
                 js = CreateJsonRevista(id,nomb,edit,volum,disp).toString();
                 out.println(js);}
         //out.println("200");
+        
+    }
+    
+    public static void sendDevolver(JSONObject JS){
+        String resp = "404";
+
+        if (actionDevolver(JS)){
+            resp = "200";
+        }
+        out.println(resp);
         
     }
         

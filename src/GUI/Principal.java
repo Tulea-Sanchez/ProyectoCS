@@ -18,7 +18,7 @@ import Herencia.*;
  *
  * @author Tulea4ever
  */
-public class Principal extends javax.swing.JFrame {
+public final class Principal extends javax.swing.JFrame {
     
     private String codigoUsuario,action;
     private Globales datos = new Globales();
@@ -131,6 +131,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         buttonDevolver.setText("DEVOLVER");
+        buttonDevolver.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonDevolverMouseClicked(evt);
+            }
+        });
         buttonDevolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonDevolverActionPerformed(evt);
@@ -194,7 +199,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/user_1.png"))); // NOI18N
 
         Label_nombre.setBackground(new java.awt.Color(255, 255, 255));
-        Label_nombre.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        Label_nombre.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         Label_nombre.setForeground(new java.awt.Color(255, 255, 255));
         Label_nombre.setText("NOMBRE");
         Label_nombre.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -213,20 +218,19 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Label_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(69, 69, 69))
+                .addGap(42, 42, 42))
         );
         jDesktopPane2Layout.setVerticalGroup(
             jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2)
-                        .addComponent(Label_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21)
+                .addGroup(jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Label_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -272,6 +276,11 @@ public class Principal extends javax.swing.JFrame {
         jLabel9.setText("SALIR");
         jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel9.setVerifyInputWhenFocusTarget(false);
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel9MouseClicked(evt);
+            }
+        });
 
         panellateral.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
         panellateral.setLayer(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -300,7 +309,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 497, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 491, Short.MAX_VALUE)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -363,6 +372,14 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonDevolverActionPerformed
 
+    private void buttonDevolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDevolverMouseClicked
+        actionDevolver();
+    }//GEN-LAST:event_buttonDevolverMouseClicked
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        dispose();
+    }//GEN-LAST:event_jLabel9MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -397,6 +414,7 @@ public class Principal extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Principal().setVisible(true);
+                
             }
         });
     }
@@ -429,6 +447,8 @@ public void apagarPaneles(){
     
 }
 
+
+
 public void globales(Globales x){
     datos = x;
     Label_nombre.setText(datos.getNombre());
@@ -437,7 +457,8 @@ public void globales(Globales x){
 
 
 public void libros(){
-   
+    buttonDevolver.setVisible(false);
+    buttonAlquilar.setVisible(true);
     borrarTabla();
     DefaultTableModel modelo = cliente.sendReceivesLibros(JSC.Jsonlibros().toString());
     tabla.setModel(modelo);
@@ -445,7 +466,8 @@ public void libros(){
 }
 
 public void revistas(){
-   
+    buttonDevolver.setVisible(false);
+    buttonAlquilar.setVisible(true);
     borrarTabla();
     DefaultTableModel modelo = cliente.sendReceivesRevistas(JSC.JsonRevistas().toString());
     //new Thread(fill(100));
@@ -455,7 +477,8 @@ public void revistas(){
 
 
 public void alquileres(){
-   
+    buttonDevolver.setVisible(true);
+    buttonAlquilar.setVisible(false);
     borrarTabla();
     DefaultTableModel modelo = cliente.sendReceivesAlquileres
         (JSC.JsonAlquileres(Label_nombre.getText()).toString());
@@ -527,6 +550,37 @@ public void alquilar(String action){
                 Alquilar alquiler = new Alquilar();
                 alquiler.setVisible(true);
                 alquiler.action(revista, datos.getNombre());
+                revistas();
+        }
+        
+    }catch(Exception e){}
+}
+
+public void actionDevolver(){
+    
+    try{
+        System.out.println(action);
+        int row = tabla.getSelectedRow();
+        
+        if (tabla.getModel().getValueAt(row, 5).toString().equalsIgnoreCase("libros")){
+            Libro libro = new Libro(tabla.getModel().getValueAt(row, 0).toString(),
+                                    tabla.getModel().getValueAt(row, 1).toString(),
+                                    tabla.getModel().getValueAt(row, 2).toString());
+            
+            Alquilar alquiler = new Alquilar();
+            alquiler.setVisible(true);
+            alquiler.devolver(libro, datos.getNombre(),tabla.getModel().getValueAt(row, 6).toString());
+            libros();
+        }
+        else{
+                Revista revista = new Revista(tabla.getModel().getValueAt(row, 0).toString(),
+                                    tabla.getModel().getValueAt(row, 1).toString(),
+                                    tabla.getModel().getValueAt(row, 2).toString(),
+                                    tabla.getModel().getValueAt(row, 3).toString());
+                
+                Alquilar alquiler = new Alquilar();
+                alquiler.setVisible(true);
+                alquiler.devolver(revista, datos.getNombre(),tabla.getModel().getValueAt(row, 6).toString());
                 revistas();
         }
         

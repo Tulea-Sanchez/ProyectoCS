@@ -24,7 +24,7 @@ public class BDManager {
     protected static final String driver = "com.mysql.jdbc.Driver";
     protected static final String user = "root";
     protected static final String passwd = "password123!";
-    protected static final String url = "jdbc:mysql://localhost:3306/proyectocs?characterEncoding=utf8";
+    protected static final String url = "jdbc:mysql://192.168.0.100:3306/proyectocs?characterEncoding=utf8";
 
     
 

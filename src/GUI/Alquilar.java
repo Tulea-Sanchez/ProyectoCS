@@ -50,6 +50,8 @@ public class Alquilar extends javax.swing.JFrame {
         textfielVolumen = new javax.swing.JTextField();
         labelCodigo = new javax.swing.JLabel();
         textfielCodigo = new javax.swing.JTextField();
+        labelfechaalquiler = new javax.swing.JLabel();
+        textfielfecha = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,6 +131,21 @@ public class Alquilar extends javax.swing.JFrame {
         textfielCodigo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         textfielCodigo.setText("CODIGO");
 
+        labelfechaalquiler.setBackground(new java.awt.Color(255, 255, 255));
+        labelfechaalquiler.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        labelfechaalquiler.setForeground(new java.awt.Color(255, 255, 255));
+        labelfechaalquiler.setText("FECHA:");
+
+        textfielfecha.setEditable(false);
+        textfielfecha.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        textfielfecha.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        textfielfecha.setText("FECHA ALQUILER");
+        textfielfecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textfielfechaActionPerformed(evt);
+            }
+        });
+
         jDesktopPane2.setLayer(labelLibro, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane2.setLayer(jSeparator1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane2.setLayer(jSeparator2, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -144,6 +161,8 @@ public class Alquilar extends javax.swing.JFrame {
         jDesktopPane2.setLayer(textfielVolumen, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane2.setLayer(labelCodigo, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane2.setLayer(textfielCodigo, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane2.setLayer(labelfechaalquiler, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane2.setLayer(textfielfecha, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane2Layout = new javax.swing.GroupLayout(jDesktopPane2);
         jDesktopPane2.setLayout(jDesktopPane2Layout);
@@ -166,6 +185,10 @@ public class Alquilar extends javax.swing.JFrame {
                         .addComponent(labelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jDesktopPane2Layout.createSequentialGroup()
                         .addGroup(jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jDesktopPane2Layout.createSequentialGroup()
+                                .addComponent(labelfechaalquiler, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(textfielfecha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jDesktopPane2Layout.createSequentialGroup()
                                 .addComponent(labelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -219,7 +242,11 @@ public class Alquilar extends javax.swing.JFrame {
                 .addGroup(jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textfielVolumen, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
-                .addGap(94, 94, 94)
+                .addGap(18, 18, 18)
+                .addGroup(jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelfechaalquiler, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textfielfecha, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
                 .addGroup(jDesktopPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -261,12 +288,18 @@ public class Alquilar extends javax.swing.JFrame {
     }//GEN-LAST:event_textfielVolumenActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        actionAlquilar();
+        if(jButton1.getText().equalsIgnoreCase("ALQUILAR")){actionAlquilar();}
+        else{devolverSend(textfielCodigo.getText());}
+        
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         dispose();
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void textfielfechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfielfechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textfielfechaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -315,11 +348,13 @@ public class Alquilar extends javax.swing.JFrame {
     private javax.swing.JLabel labelLibro;
     private javax.swing.JLabel labelUsuario;
     private javax.swing.JLabel labelVolumen;
+    private javax.swing.JLabel labelfechaalquiler;
     private javax.swing.JTextField texfielEditorial;
     private javax.swing.JTextField textfielCodigo;
     private javax.swing.JTextField textfielLibro;
     private javax.swing.JTextField textfielUsuario;
     private javax.swing.JTextField textfielVolumen;
+    private javax.swing.JTextField textfielfecha;
     // End of variables declaration//GEN-END:variables
 
 public void action(Libro xlibro,String xusuario){
@@ -336,7 +371,10 @@ public void action(Libro xlibro,String xusuario){
     labelFecha.setText(LocalDate.now().toString());
     labelVolumen.setVisible(false);
     textfielVolumen.setVisible(false);
-    action = "libro";
+    textfielfecha.setVisible(false);
+    labelfechaalquiler.setVisible(false);
+
+    action = "libros";
     //alquilar(this.libro,usuario);
 }
 
@@ -355,13 +393,15 @@ public void action(Revista xRevista,String xusuario){
     labelLibro.setText("REVISTA:");
     labelVolumen.setVisible(true);
     textfielVolumen.setVisible(true);
+    textfielfecha.setVisible(false);
+    labelfechaalquiler.setVisible(false);
     //alquilar(this.revista,usuario);
-    action = "revista";
+    action = "revistas";
 }
 
 public void actionAlquilar(){
     
-    if (action.equalsIgnoreCase("libro")){alquilar(this.libro,usuario);}
+    if (action.equalsIgnoreCase("libros")){alquilar(this.libro,usuario);}
     else{alquilar(this.revista,usuario);}
 }
 
@@ -382,6 +422,70 @@ public void alquilar(Libro xlibro,String xcodigoUsuario){
     else{System.out.println("alquilar void error"+cliente.alquilarSend(datos));}
     
 }
+
+public void actionDevolver(){
+    
+    if (action.equalsIgnoreCase("libros")){alquilar(this.libro,usuario);}
+    else{alquilar(this.revista,usuario);}
+}
+
+public void devolver(Revista xRevista,String xusuario,String xfecha){
+    
+    revista = xRevista;
+    this.usuario = xusuario;
+    
+    
+    textfielCodigo.setText(revista.getCodigo());
+    textfielLibro.setText(revista.getNombre());
+    texfielEditorial.setText(revista.getEditorial());
+    textfielUsuario.setText(usuario);
+    textfielVolumen.setText(revista.getVolumen());
+    labelLibro.setText("REVISTA:");
+    labelVolumen.setVisible(true);
+    textfielVolumen.setVisible(true);
+    labelFecha.setVisible(false);
+    labelfechaalquiler.setVisible(true);
+    jButton1.setText("Devolver");
+    textfielfecha.setText(xfecha);
+    textfielfecha.setVisible(true);
+    //alquilar(this.revista,usuario);
+    action = "revistas";
+}
+public void devolver(Libro libro,String xusuario,String xfecha){
+    
+    this.libro = libro;
+    this.usuario = xusuario;
+    
+    
+    textfielCodigo.setText(libro.getCodigo());
+    textfielLibro.setText(libro.getNombre());
+    texfielEditorial.setText(libro.getEditorial());
+    textfielUsuario.setText(usuario);
+    labelFecha.setText(LocalDate.now().toString());
+    labelVolumen.setVisible(false);
+    textfielVolumen.setVisible(false);
+    labelFecha.setVisible(false);
+    labelfechaalquiler.setVisible(true);
+    jButton1.setText("Devolver");
+    textfielfecha.setText(xfecha);
+    textfielfecha.setVisible(true);
+    //alquilar(this.revista,usuario);
+    action = "libros";
+}
+
+public void devolverSend(String xcodigo){
+    
+    String tip;
+    if (textfielVolumen.getText().equalsIgnoreCase("VOLUMEN REVISTA")){tip = "libros";}
+    else{tip = "revistas";}
+    
+    String dato = cliente.JsonDevolver(xcodigo, tip).toString();
+    
+    if(cliente.sendDevolver(dato)){dispose();}
+    else{System.out.println("devolver void error"+dato);}
+    
+}
+
 
 
 

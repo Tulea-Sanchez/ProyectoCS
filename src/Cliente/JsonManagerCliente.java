@@ -51,6 +51,18 @@ public class JsonManagerCliente {
         return datos;        
     }
     
+    
+    public JSONObject JsonDevolver (String id,String tipo){
+
+        JSONObject datos = new JSONObject();
+        datos.put("action", "devolver");
+        datos.put("id", id);
+        datos.put("tipo", tipo);
+        
+    
+        return datos;        
+    }
+    
     public JSONObject JsonID (String user,String passwd){
         
         

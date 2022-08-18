@@ -258,4 +258,53 @@ public class BDManager extends JsonManagerServer{
         return size;
     }
     
+    public static int countSelectAlquileres(String dato,String usuario){
+        Conexion();
+        int size = 0;
+        try{
+            declaracion = iniciar();
+            //declaracion corta para evitar inyeccion
+            String Query = "select * from "+dato+" where usuario = '"+usuario+"'";
+            //traer resultados del select
+            ResultSet rs  = declaracion.executeQuery(Query);
+            
+            while (rs.next()) {
+    	        //System.out.println(rs.getString("id_libro")+"\t\t"+rs.getString("nombre"));
+    	        size++;
+            }
+            
+        } catch(Exception e){System.out.println(e);}
+        
+        //System.out.println("Conteo: "+size);
+        return size;
+    }
+    
+    
+    public static Boolean actionDevolver(JSONObject datos){
+        Boolean conclucion = false;
+        String tabla = "";
+        System.out.println(datos.get("tipo").toString());
+        if (datos.get("tipo").toString().equals("libros")){tabla = "libros";}
+        else {tabla = "revistas";}
+        try{
+            
+            declaracion = iniciar();
+            //declaracion corta para evitar inyeccion
+            System.out.println("tabla action devolver "+tabla);
+            //System.out.println("devolver boolean bd server antes del querry");
+            String Query = "DELETE FROM alquileres where id = '"+(datos.get("id")+"' and tipo = '"+datos.get("tipo")+"'");
+            System.out.println("Query action devolver "+Query);
+            //insert de los datos
+            declaracion.executeUpdate(Query);
+            
+            Query = (String) "UPDATE "+tabla+" SET disponible = true where id = "+Integer.parseInt(datos.get("id").toString());  
+            
+            declaracion.executeUpdate(Query);
+            conclucion = true;
+            
+        } catch(Exception e){System.out.println("Except devolver bd server"+e);conclucion = false;}
+        return conclucion;
+    }
+
+    
 }

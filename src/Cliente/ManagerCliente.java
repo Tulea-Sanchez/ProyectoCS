@@ -23,7 +23,7 @@ import org.json.simple.JSONObject;
 public class ManagerCliente extends JsonManagerCliente{
     
     private static String host = "localhost";    
-    private static int port = 32000;
+    private static int port = 29000;
     private static JSONObject response;
     private static PrintWriter envio;
     private static BufferedReader Respuesta;
@@ -63,7 +63,7 @@ public class ManagerCliente extends JsonManagerCliente{
             }
             
             
-        }catch(Exception e){System.out.println("except");}
+        }catch(Exception e){System.out.println("except login "+e);}
         
         return status;
     }
@@ -206,7 +206,7 @@ public class ManagerCliente extends JsonManagerCliente{
             
             int size = Integer.parseInt(Respuesta.readLine());
             System.out.println("sendReceives size"+size);
-            for (int i = 0;i<3;i++){
+            for (int i = 0;i<size;i++){
                 
                 
                 cadena = Respuesta.readLine();
@@ -268,6 +268,30 @@ public class ManagerCliente extends JsonManagerCliente{
         }catch(Exception e){System.out.println("except sendRevistas"+e);}
         
         return modelo;
+    }
+    
+    
+    
+    public boolean sendDevolver(String jsonString){
+        boolean status = false;
+        try (Socket socket = new Socket(host,port)){
+            
+            envio = new PrintWriter(socket.getOutputStream(),true);
+            Respuesta = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            
+            while(true){
+                envio.println(jsonString);
+                envio.flush(); // revisar que se envien todos los datos
+                if (Respuesta.readLine().equals("200")){status = true;}
+                //System.out.println("Respuesta del servidor:"+ Respuesta.readLine());
+                break;
+            }
+            
+            
+        }catch(Exception e){System.out.println("except");}
+        
+        return status;
     }
     
     /*public Array send(String jsonString){
