@@ -357,13 +357,15 @@ public class Alquilar extends javax.swing.JFrame {
     private javax.swing.JTextField textfielfecha;
     // End of variables declaration//GEN-END:variables
 
+    
+    //DECLARAR ACCION AL ALQUILAR LIBROS
 public void action(Libro xlibro,String xusuario){
     
-    
+    //DECLARACION DE DATOS
     this.libro = xlibro;
     this.usuario = xusuario;
 
-    
+    //INSERT DE LOS DATOS A GUI Y MOSTRAR LOS NECESARIOS
     textfielCodigo.setText(libro.getCodigo());
     textfielLibro.setText(libro.getNombre());
     texfielEditorial.setText(libro.getEditorial());
@@ -373,17 +375,18 @@ public void action(Libro xlibro,String xusuario){
     textfielVolumen.setVisible(false);
     textfielfecha.setVisible(false);
     labelfechaalquiler.setVisible(false);
-
+    //CONVERITR LA ACCION ACTUAL A LIBROS
     action = "libros";
-    //alquilar(this.libro,usuario);
 }
 
+//DECLARAR ACCION PARA ALQUILAR REVISTAS
 public void action(Revista xRevista,String xusuario){
     
+    //DECLARACION DE LOS DATOS
     revista = xRevista;
     this.usuario = xusuario;
     
-    
+    //INSERTAR LOS DATOS Y MOSTRAR LOS CAMPOS CORRECTOS
     textfielCodigo.setText(revista.getCodigo());
     textfielLibro.setText(revista.getNombre());
     texfielEditorial.setText(revista.getEditorial());
@@ -395,46 +398,52 @@ public void action(Revista xRevista,String xusuario){
     textfielVolumen.setVisible(true);
     textfielfecha.setVisible(false);
     labelfechaalquiler.setVisible(false);
-    //alquilar(this.revista,usuario);
+    //DECLARAR LA ACCION ACTUAL A REVISTAS
     action = "revistas";
 }
 
+//DECLARAR FUNCION PARA EL BOTON ALQUILAR
 public void actionAlquilar(){
-    
+    //SE DECLARA SI LOS DATOS SERAN DE LIBROS O REVISTAS PARA EJECUTAR RESPECTIVO
     if (action.equalsIgnoreCase("libros")){alquilar(this.libro,usuario);}
     else{alquilar(this.revista,usuario);}
 }
 
-
+//FUNCION DE ALQUILAR PARA REVISTAS
 public void alquilar(Revista xRevista,String xcodigoUsuario){
-    
+    //SE ENVIAN LOS DATOS PARA ALQUILAR AL SERVIDOR
     String datos = cliente.JsonAlquilar(xRevista, xcodigoUsuario).toString();
     System.out.println("Json alquilar "+datos);
+    //RESPUESTA ESPERADA TRUE Y LUEGO CERRAR
     if(cliente.alquilarSend(datos)){dispose();}
     else{System.out.println("alquilar void error"+cliente.alquilarSend(datos));}
 }
 
+//FUNCION PARA ALQUILAR LIBROS 
 public void alquilar(Libro xlibro,String xcodigoUsuario){
-    
+    //SE DELCARAN LOS DATOS CONVERTIDOS EN STRING JSON
     String datos = cliente.JsonAlquilar(xlibro, xcodigoUsuario).toString();
-    
+    //SE ENVIA A LA FUNCION QUE CONECTA CON EL SERVIDOR ESPERANDO TRUE
     if(cliente.alquilarSend(datos)){dispose();}
     else{System.out.println("alquilar void error"+cliente.alquilarSend(datos));}
     
 }
 
+/*//FUNCION PARA EL BOTON DEVOLVER
 public void actionDevolver(){
-    
+    //DECLARACION DE SI DEVOLVEREMOS LIBROS O REVISTAS
     if (action.equalsIgnoreCase("libros")){alquilar(this.libro,usuario);}
     else{alquilar(this.revista,usuario);}
-}
+}*/
 
+//DEVOLVER PARA REVISTAS
 public void devolver(Revista xRevista,String xusuario,String xfecha){
     
+    //DECLARACION DE DATOS
     revista = xRevista;
     this.usuario = xusuario;
     
-    
+    //MOSTRAR AL USUARIO LOS DATOS Y CAMPOS RESPECTIVOS PARA REVISTAS
     textfielCodigo.setText(revista.getCodigo());
     textfielLibro.setText(revista.getNombre());
     texfielEditorial.setText(revista.getEditorial());
@@ -448,15 +457,18 @@ public void devolver(Revista xRevista,String xusuario,String xfecha){
     jButton1.setText("Devolver");
     textfielfecha.setText(xfecha);
     textfielfecha.setVisible(true);
-    //alquilar(this.revista,usuario);
+    //SE DECLARA ACCION REVISTTAS
     action = "revistas";
 }
+
+//FUNCION DEVOLVER LIBROS
 public void devolver(Libro libro,String xusuario,String xfecha){
     
+    //DECLARACION DE LOS DATOS
     this.libro = libro;
     this.usuario = xusuario;
     
-    
+    //SE MUESTRA AL USUARIO CAMPOS Y DATOS RESPECTIVOS A LIBROS
     textfielCodigo.setText(libro.getCodigo());
     textfielLibro.setText(libro.getNombre());
     texfielEditorial.setText(libro.getEditorial());
@@ -469,25 +481,24 @@ public void devolver(Libro libro,String xusuario,String xfecha){
     jButton1.setText("Devolver");
     textfielfecha.setText(xfecha);
     textfielfecha.setVisible(true);
-    //alquilar(this.revista,usuario);
+    //SE DECLARA ACCION A LIBROS
     action = "libros";
 }
 
+//FUNCION PARA EL BOTON DE DEVOLVER 
 public void devolverSend(String xcodigo){
     
+    //DECLARACION DEL TIPO A DEVOLVER - LIBRO O REVISTA
     String tip;
     if (textfielVolumen.getText().equalsIgnoreCase("VOLUMEN REVISTA")){tip = "libros";}
     else{tip = "revistas";}
-    
+    //CREA EL JSON PARA EL ENVIO DE DATOS Y SE ENVIA
     String dato = cliente.JsonDevolver(xcodigo, tip).toString();
-    
+    //ESPERA RESPUESTA DEL SERVIDOR PARA CONFIRMAR Y CERRAR
     if(cliente.sendDevolver(dato)){dispose();}
     else{System.out.println("devolver void error"+dato);}
     
 }
-
-
-
 
 
 }

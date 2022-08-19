@@ -377,7 +377,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonDevolverMouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        dispose();
+        System.exit(0);
     }//GEN-LAST:event_jLabel9MouseClicked
 
     /**
@@ -440,72 +440,87 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
+    //APAGAR LOS PANELES NO NECESARIOS
 public void apagarPaneles(){
     PanelPrincipal.setVisible(false);
-    tabla.setVisible(false);
-    
-    
+    tabla.setVisible(false); 
 }
 
-
-
+//FUNCION PARA IGUALAR DATOS DE GLOBALES CON EL LOGIN
 public void globales(Globales x){
     datos = x;
-    Label_nombre.setText(datos.getNombre());
-    
+    Label_nombre.setText(datos.getNombre());  
 }
 
-
+//FUNCION PARA TRAER DATOS DEL SERVIDOR E INSERTARLOS EN LA TABLE
 public void libros(){
+    //VISUALIZACION DEL BOTON CORRECTO 
     buttonDevolver.setVisible(false);
     buttonAlquilar.setVisible(true);
     borrarTabla();
+    //CREACION DEL MODELO
     DefaultTableModel modelo = cliente.sendReceivesLibros(JSC.Jsonlibros().toString());
+    //INSERCION DEL MODELO EN LA TABLA CON LOS DATOS
     tabla.setModel(modelo);
+    //PASO DE ACCION A LIBROS
     action = "libros";
 }
 
+//FUNCION PARA VISUALIZACION DE REVISTAS
 public void revistas(){
+    //VISUALIZAR EL BOTON CORRECTO
     buttonDevolver.setVisible(false);
     buttonAlquilar.setVisible(true);
     borrarTabla();
+    //DECLARACION DEL MODELO CON LOS DATOS DEL SERVIDOR
     DefaultTableModel modelo = cliente.sendReceivesRevistas(JSC.JsonRevistas().toString());
     //new Thread(fill(100));
+    //INSERSION DEL MODELO A LA TABLA
     tabla.setModel(modelo);
+    //DECLARAR LA ACCION A REVISTAS
     action = "revistas";
 }
 
-
+//FUNCION PARA RECIBIR LOS ALQUILERES ACTIVOS
 public void alquileres(){
+    //VISUALIZAR BOTON CORRECTO
     buttonDevolver.setVisible(true);
     buttonAlquilar.setVisible(false);
     borrarTabla();
+    //INSERT DE LOS DATOS DEL SERVIDOR AL MODELO
     DefaultTableModel modelo = cliente.sendReceivesAlquileres
         (JSC.JsonAlquileres(Label_nombre.getText()).toString());
     //new Thread(fill(100));
+    //INSERTAR MODELO A LA TABLA PARA SU VISUALIZACION
     tabla.setModel(modelo);
     
 }
 
+//ELIMINAR LA TABLA ACTUAL PARA NUEVA VISUALIZACION
 public void borrarTabla(){
+    //SE DECLARA MODELO NUEVO
     DefaultTableModel modelo = (DefaultTableModel)tabla.getModel(); 
+    //SE LIMPIA MEDIANTE BUCLE WHILE
     while(modelo.getRowCount() > 0) 
         { modelo.removeRow(0); }
     
 
 }
 
+//FUNCION PARA MOSTRAR BARRA DE PROGRESO
 public String fill(int tiempo){
-    
+        
+    //CREACION DE LA BARRA
         JProgressBar bar = new JProgressBar();
         bar.setValue(0);
         bar.setVisible(true);
         bar.setBounds(0,0,1266,50);
         //bar.setStringPainted(true);
         bar.setFont(new Font("MV Boli",Font.BOLD,25));
+        //AñADIRMLA AL OBJETO JFRAME
         jDesktopPane1.add(bar);
         int count = 0;
-        
+        //SIMULAR LA CARGA DE DATOS
         while(count <=100){
             bar.setValue(count);
             
@@ -525,30 +540,34 @@ public String fill(int tiempo){
         return "f";
     }
 
+//FUNCION PARA EL BOTON DE ALQUILAR
 public void alquilar(String action){
     
     try{
-        System.out.println(action);
+        //DEFINIR LA LINEA SELECCIONADA EN LA TABLA
         int row = tabla.getSelectedRow();
-        
+        //DECLARAR SI ES UN LIBRO O REVISTA
         if (action.equalsIgnoreCase("libros")){
             Libro libro = new Libro(tabla.getModel().getValueAt(row, 0).toString(),
                                     tabla.getModel().getValueAt(row, 1).toString(),
                                     tabla.getModel().getValueAt(row, 2).toString());
-            
+            //MUESTRA VENTANA DE ALQUILER
             Alquilar alquiler = new Alquilar();
             alquiler.setVisible(true);
+            //REALIZA LA SELECCION DE ACCION PARA VISUALIZAR VENTANA
             alquiler.action(libro, datos.getNombre());
             libros();
         }
+        //EJECUTA SI ES REVISTA
         else{
                 Revista revista = new Revista(tabla.getModel().getValueAt(row, 0).toString(),
                                     tabla.getModel().getValueAt(row, 1).toString(),
                                     tabla.getModel().getValueAt(row, 2).toString(),
                                     tabla.getModel().getValueAt(row, 3).toString());
-                
+                //CREA LA VENTANA DE ALQUILERES
                 Alquilar alquiler = new Alquilar();
                 alquiler.setVisible(true);
+                //DEFINE LOS COMPONENTES A VISUALIZAR DE LA VENTANA ANTERIOR
                 alquiler.action(revista, datos.getNombre());
                 revistas();
         }
@@ -556,30 +575,34 @@ public void alquilar(String action){
     }catch(Exception e){}
 }
 
+//FUNCION PARA EL BOTON DE DEVOLVER
 public void actionDevolver(){
     
     try{
-        System.out.println(action);
+
+        //DEFINE LA LINEA SELECCIONADA DE LA TABLA
         int row = tabla.getSelectedRow();
-        
+        //EXTRAE LOS DATOS SELECCIONADOS DE LA TABLA
         if (tabla.getModel().getValueAt(row, 5).toString().equalsIgnoreCase("libros")){
             Libro libro = new Libro(tabla.getModel().getValueAt(row, 0).toString(),
                                     tabla.getModel().getValueAt(row, 1).toString(),
                                     tabla.getModel().getValueAt(row, 2).toString());
-            
+            //CREA LA VENTANA DE DEVOLUCION
             Alquilar alquiler = new Alquilar();
             alquiler.setVisible(true);
+            //DECLARA LA VENTANA CON LOS COMPONENTES PARA LIBROS
             alquiler.devolver(libro, datos.getNombre(),tabla.getModel().getValueAt(row, 6).toString());
             libros();
         }
-        else{
+        else{//EJECUTA SI ES UNA REVISTA
                 Revista revista = new Revista(tabla.getModel().getValueAt(row, 0).toString(),
                                     tabla.getModel().getValueAt(row, 1).toString(),
                                     tabla.getModel().getValueAt(row, 2).toString(),
                                     tabla.getModel().getValueAt(row, 3).toString());
-                
+                //CREA LA VENTANA DE DEVOLUCION
                 Alquilar alquiler = new Alquilar();
                 alquiler.setVisible(true);
+                //DELCARA LOS COMPONENTES VISUALES DE LA VENTANA PARA REVISTA
                 alquiler.devolver(revista, datos.getNombre(),tabla.getModel().getValueAt(row, 6).toString());
                 revistas();
         }

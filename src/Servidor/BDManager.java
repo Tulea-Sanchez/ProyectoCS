@@ -22,6 +22,7 @@ import org.json.simple.JSONObject;
  */
 public class BDManager extends JsonManagerServer{
     
+    //DECLARACION DE DATOS
     static Statement declaracion;
     static ResultSet resultado;
     private static Connection con = null;
@@ -31,7 +32,7 @@ public class BDManager extends JsonManagerServer{
     protected static final String url = "jdbc:mysql://localhost:3306/proyectocs?characterEncoding=utf8";
 
     
-
+    //MAIN PARA EJECUCION AUTOMATICA
     public static void main(String[] args) {
 
         try{
@@ -57,7 +58,7 @@ public class BDManager extends JsonManagerServer{
         return con;
     }
     
-    //conectar la declaracion con BD
+    //INICIAR COMUNICACION 
     public static Statement iniciar() {
         
         try{
@@ -85,7 +86,7 @@ public class BDManager extends JsonManagerServer{
         
         
     }
-    
+    //FUNCION PARA SELECCIONAR TODO DE UNA TABLA MEDIANTE WHERE ESPECIFICADO
     public static void select(String tabla,String variable,String dato){
         Boolean conclucion = false;
         try{
@@ -100,17 +101,20 @@ public class BDManager extends JsonManagerServer{
                 if (dato.equalsIgnoreCase(resultado.getString(variable))){
                     conclucion = true;
                     break;
-                    //insertar aca el codigo para la creacion del json y
-                    //convertir la funcion a return json
+                    
                 }
             } while(resultado.next());
         } catch(Exception e){}
         
     }
     
+    //FUNCION DE VERIFICAR LOS DATOS LOGIN ENVIADOS POR EL CLIENTE
     public static Boolean verficiarLogin(String usuario,String contra){
+        //INICIA LA CONEXION CON BD
         Conexion();
+        //DECLARA EL RESULTADO
         Boolean conclucion = false;
+        
         try{
             declaracion = iniciar();
             //declaracion corta para evitar inyeccion
@@ -119,25 +123,29 @@ public class BDManager extends JsonManagerServer{
             resultado = declaracion.executeQuery(Query);
             resultado.next();
             do {
-                
+                //VERIFICAR SI LOS DATOS COINCIDEN CON LA BD
                 if (usuario.equalsIgnoreCase(resultado.getString("user"))
                         && contra.equalsIgnoreCase(resultado.getString("passwd"))){
                     conclucion = true;
-                    break;
-                    
+                    break;    
                 }
 
             } while(resultado.next());
         } catch(Exception e){}
+        //DEVOLVER RESPUSTA AL CLIENTE
         return conclucion;
     }
     
+    //BUSCAR EL ID DE UN USUARIO MEDIANTE SU CONTRASEñA Y NOMBRE
     public static String BuscaridUsuario(String usuario,String contra){
+        //CONECTAR CON LAS BD
         Conexion();
+        //DECLARAR LA RESPUESTA AL CLIETE
         String conclucion = "";
+        
         try{
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
+            //SELCCIONAR LOS DATOS EN LA BD
             String Query = "select * from usuarios ";
             //traer resultados del select
             resultado = declaracion.executeQuery(Query);
@@ -149,7 +157,6 @@ public class BDManager extends JsonManagerServer{
                     conclucion = resultado.getString("id");
                     //System.out.println("resultado id "+ conclucion);
                     break;
-                    
                 }
 
             } while(resultado.next());
@@ -157,13 +164,14 @@ public class BDManager extends JsonManagerServer{
         return conclucion;
     }
     
-    
+    //FUNCION PARA REGISTRAR DATOS DE USUARIO ENVIADOS POR CLIENTE
     public static Boolean Registration(String user,String pass){
+        //DECLARAR LA RESPUESTA 
         Boolean conclucion = false;
         try{
-            
+            //INICIAR LA COMUNICACION
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
+            //CREAR EL QUERY PARA INSERT 
             String Query = (String) "INSERT INTO USUARIOS (user,passwd) values ('"+user+"','"+pass+"')";  
             //insert de los datos
             int x = declaracion.executeUpdate(Query);
@@ -173,20 +181,20 @@ public class BDManager extends JsonManagerServer{
         return conclucion;
     }
     
-    
+    //FUNCION PARA ALQUILAR LIBROS O REVISTAS
     public static Boolean Alquilar(JSONObject datos){
+        //DECLARACION DE LA RESPUESTA
         Boolean conclucion = false;
+        //VARIABLE PARA LA TABLA A INSERTAR
         String tabla = "";
-        
+        //VERIFICAR SI ES UN LIBRO O REVISTA
         if (datos.get("action").toString().equals("alquilarLibros")){tabla = "libros";}
         else {tabla = "revistas";}
         
         try{
-            
+            //INICIAR CONEXION CON BD
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
-            
-            System.out.println("alquilar boolean bd server antes del querry");
+            //CREAR QUERY PARA INSERTAR LOS DATOS A LA TABLA ALQUILERES
             String Query = (String) "INSERT INTO alquileres (id,nombre,usuario,editorial,volumen,tipo) "
                     + "values ('"+Integer.parseInt(datos.get("cod_libro").toString())+"',"
                     + "'"+datos.get("nombre").toString()+"',"  
@@ -195,38 +203,44 @@ public class BDManager extends JsonManagerServer{
                     + "'"+datos.get("volumen").toString()+"',"
                     + "'"+tabla+"')";  
 
-            //insert de los datos
+            //EJECUTAR EL INSERT
             declaracion.executeUpdate(Query);
-            
+            //DECLARAR NUEVO QUERY PARA ACTUALIZAR EL ESTADO DEL LIBRO/ REVISTA
             Query = (String) "UPDATE "+tabla+" SET disponible = false where id = "+Integer.parseInt(datos.get("cod_libro").toString());  
-            
+            //EJECUTAR EL UPDATE
             declaracion.executeUpdate(Query);
             conclucion = true;
             
         } catch(Exception e){System.out.println("Except alquilar bd server"+e);conclucion = false;}
+        //DEVOLVER SI SE ACTUALIZO E INSERTO CORRECTAMENTE O NO
         return conclucion;
     }
     
+    //FUNCION PARA SELECCIONAR TODO DE UNA TABLA
     public static ResultSet selectAll(String dato){
         Conexion();
         try{
+            //INICIAR COMUNICACION CON LA BD
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
+            //DELCARACION DEL QUERY
             String Query = "select * from "+dato;
             //traer resultados del select
             resultado = declaracion.executeQuery(Query);
             resultado.next();
             
         } catch(Exception e){System.out.println(e);}
-        
+        //DEVOLVER LOS RESULTADOS DEL SELECT
         return resultado;
     }
     
+    //FUNCION PARA SELECCIONAR TODO EN ALQUILERES MEDIANTE CONDICIONAL USUARIO
     public static ResultSet selectAllalquileres(String dato,String usuario){
+        //INICIAR LA CONEXION CON BD
         Conexion();
         try{
+            //DELCARACION
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
+            //CREAR EL QUERY PARA EL SELECT MEDIANTE UNA CONDICION USUARIO
             String Query = "select * from alquileres where usuario = '"+usuario+"'";
             //traer resultados del select
             resultado = declaracion.executeQuery(Query);
@@ -237,16 +251,19 @@ public class BDManager extends JsonManagerServer{
         return resultado;
     }
     
+    //FUNCION PARA CONTAR LOS RESULTADOS OBTENIDOS Y ENVIAR AL CLIENTE 
     public static int countSelect(String dato){
+        //INICIA LA CONEXION
         Conexion();
+        //DECLARACION DEL TAMANO
         int size = 0;
         try{
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
+            //DECLARAR EL QUERY MEDIANTE TABLAS
             String Query = "select * from "+dato;
             //traer resultados del select
             ResultSet rs  = declaracion.executeQuery(Query);
-            
+            //BUCLE PARA DEFINIR CUANTAS LINEAS DE DATOS SE OBTUVO
             while (rs.next()) {
     	        //System.out.println(rs.getString("id_libro")+"\t\t"+rs.getString("nombre"));
     	        size++;
@@ -254,20 +271,23 @@ public class BDManager extends JsonManagerServer{
             
         } catch(Exception e){System.out.println(e);}
         
-        //System.out.println("Conteo: "+size);
+        //DEVOLVER EN NUMERO DE DATOS FINALES
         return size;
     }
     
+    //FUNCION PARA CONTAR LOS ALQUILERES MEDIANTE CONDICIONAL
     public static int countSelectAlquileres(String dato,String usuario){
+        //INICIAR COMUNICACION
         Conexion();
+        //DECLARAR VARIABLE CONTEO
         int size = 0;
         try{
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
+            //declaracion corta DE QUERY MEDIANTE CONDICIONAL
             String Query = "select * from "+dato+" where usuario = '"+usuario+"'";
             //traer resultados del select
             ResultSet rs  = declaracion.executeQuery(Query);
-            
+            //BUCLE PARA DEFINIR LA CANTIDAD DE DATOS OBTENIDO
             while (rs.next()) {
     	        //System.out.println(rs.getString("id_libro")+"\t\t"+rs.getString("nombre"));
     	        size++;
@@ -275,34 +295,35 @@ public class BDManager extends JsonManagerServer{
             
         } catch(Exception e){System.out.println(e);}
         
-        //System.out.println("Conteo: "+size);
+        //RETORNO DE CUANTOS DATOS SE ENVIARAN AL CLIENTE
         return size;
     }
     
-    
+    //FUNCION PARA DEVOLVER UN LIBRO O REVISTA
     public static Boolean actionDevolver(JSONObject datos){
+        //DECLARAR RESPUESTA PARA CLIENTE
         Boolean conclucion = false;
+        //DECLARACION TALBA
         String tabla = "";
-        System.out.println(datos.get("tipo").toString());
+        //VERIFICAR SI DEVULVEN UN LIBRO O REVISTA
         if (datos.get("tipo").toString().equals("libros")){tabla = "libros";}
         else {tabla = "revistas";}
         try{
             
             declaracion = iniciar();
-            //declaracion corta para evitar inyeccion
-            System.out.println("tabla action devolver "+tabla);
-            //System.out.println("devolver boolean bd server antes del querry");
+            //DECLARACION DE QUERY PARA BORRAR EN ALQUILERES
             String Query = "DELETE FROM alquileres where id = '"+(datos.get("id")+"' and tipo = '"+datos.get("tipo")+"'");
-            System.out.println("Query action devolver "+Query);
-            //insert de los datos
+
+            //EJECUCCION DEL QUERY
             declaracion.executeUpdate(Query);
-            
+            //NUEVO QUERY PARA ACTUALIZAR ESTADO DE LIBRO O REVISTA
             Query = (String) "UPDATE "+tabla+" SET disponible = true where id = "+Integer.parseInt(datos.get("id").toString());  
-            
+            //EJECUCCION DEL QUERY
             declaracion.executeUpdate(Query);
             conclucion = true;
             
         } catch(Exception e){System.out.println("Except devolver bd server"+e);conclucion = false;}
+        //RETORNO DEL RESULTADO PARA CLIENTE
         return conclucion;
     }
 

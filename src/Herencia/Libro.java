@@ -10,18 +10,18 @@ package Herencia;
  */
 public class Libro {
     
+    //DECLARACION DE VARIABLES
     private static String codigo;
     private static String nombre;
     private static String editorial;
 
-
+    //CONSTRUCTOR
     public Libro(String codigo, String nombre, String editorial) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.editorial = editorial;
-       
     }
-
+    //GETS AND SETS
     public String getCodigo() {
         return codigo;
     }
@@ -45,8 +45,5 @@ public class Libro {
     public void setEditorial(String editorial) {
         this.editorial = editorial;
     }
-
-    
-    
     
 }

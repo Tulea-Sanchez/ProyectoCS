@@ -12,12 +12,7 @@ import Herencia.*;
  */
 public class JsonManagerCliente {
 
-    
-    
-    
-    
-    
-    
+    //CREAR JSON PARA LOGIN 
     public static String CreateString(String user, String passwd) {
         
         String json = "{\"user\":+user+,\"pass\":+passwd}"; 
@@ -28,7 +23,7 @@ public class JsonManagerCliente {
     
     
     
-    
+    //CONVERIR UNA CADENA EN FORMATO JSON A UN OBJETO JSON
     public static JSONObject StringJson(String cadena){
         
         JSONObject objetoJson = null;
@@ -36,13 +31,11 @@ public class JsonManagerCliente {
         try{
         objetoJson = (JSONObject) parser.parse(cadena);
         }catch(Exception e){System.out.println("Jsonmancliente StringJson:"+e);}
-        
-        //System.out.println(objetoJson.get("nombre")+"objeto");
         return objetoJson;
     }
     
+    //CREAR JSON QUE SE ENVIA PARA VERIFICAR LOGIN
     public JSONObject Jsonlogin (String user,String passwd){
-        
         
         JSONObject datos = new JSONObject();
         datos.put("action", "login");
@@ -51,7 +44,7 @@ public class JsonManagerCliente {
         return datos;        
     }
     
-    
+    //CREAR JSON PARA DEVOLVER LIBRO O REVISTA
     public JSONObject JsonDevolver (String id,String tipo){
 
         JSONObject datos = new JSONObject();
@@ -63,8 +56,8 @@ public class JsonManagerCliente {
         return datos;        
     }
     
+    //CREAR JSON PARA OBTENER EL ID DE UN USUARIO 
     public JSONObject JsonID (String user,String passwd){
-        
         
         JSONObject datos = new JSONObject();
         datos.put("action", "id");
@@ -73,7 +66,7 @@ public class JsonManagerCliente {
         return datos;        
     }
     
-    
+    //CREAR JSON PARA DATOS DE ALQUILERES LIBROS
     public JSONObject JsonAlquiler (String id,String nombre,String editorial,String usuario){
  
         JSONObject datos = new JSONObject();
@@ -83,14 +76,12 @@ public class JsonManagerCliente {
         datos.put("editorial", editorial);
         datos.put("volumen", "null");
         datos.put("usuario", usuario);
-    
-        
         return datos;        
     }
     
+    //CREAR JSON PARA DATOS DE ALQUILERES REVISTAS
     public JSONObject JsonAlquiler (String id,String nombre,String editorial,String volumen,String usuario){
-        
-        
+
         JSONObject datos = new JSONObject();
         datos.put("action", "alquilarRevista");
         datos.put("id", id);
@@ -98,21 +89,19 @@ public class JsonManagerCliente {
         datos.put("editorial", editorial);
         datos.put("volumen", volumen);
         datos.put("usuario", usuario);
-    
-        
         return datos;        
     }
     
+    //CREAR JSON PARA SOLICITAR LIBROS AL SERVER
     public JSONObject Jsonlibros(){
-        
         
         JSONObject datos = new JSONObject();
         datos.put("action", "libros");
         return datos;        
     }
     
+    //CREAR JSON PARA SOLICITAR ALQUILERES AL SERVER
     public JSONObject JsonAlquileres(String nombre){
-        
         
         JSONObject datos = new JSONObject();
         datos.put("action", "alquileres");
@@ -120,16 +109,16 @@ public class JsonManagerCliente {
         return datos;        
     }
     
+    //CREAR JSON PARA SOLICITAR REVISTAS AL SERVER
     public JSONObject JsonRevistas(){
-        
         
         JSONObject datos = new JSONObject();
         datos.put("action", "revistas");
         return datos;        
     }
     
+    //CREAR JSON PARA REGISTRAR UN NUEVO USUARIO
     public JSONObject JsonRegistration (String user,String passwd){
-        
         
         JSONObject datos = new JSONObject();
         datos.put("action", "Registration");
@@ -138,9 +127,9 @@ public class JsonManagerCliente {
         return datos;        
     }
     
+    //CREAR JSON PARA ALQUILAR UN LIBRO
     public JSONObject JsonAlquilar (Libro libro,String codigoUsuario){
-        
-        
+         
         JSONObject datos = new JSONObject();
         datos.put("action", "alquilarLibros");
         datos.put("tabla", "libros");
@@ -149,13 +138,11 @@ public class JsonManagerCliente {
         datos.put("editorial", libro.getEditorial());
         datos.put("volumen", "");
         datos.put("cod_usuario", codigoUsuario);
-
-
         return datos;        
     }
     
+    //CREAR JSON PARA ALQUILAR UNA REVISTA
     public JSONObject JsonAlquilar (Revista revista,String codigoUsuario){
-        
         
         JSONObject datos = new JSONObject();
         datos.put("action", "alquilarRevistas");
@@ -165,8 +152,6 @@ public class JsonManagerCliente {
         datos.put("editorial", revista.getEditorial());
         datos.put("volumen", revista.getVolumen());
         datos.put("cod_usuario", codigoUsuario);
-        
-
         return datos;        
     }
     

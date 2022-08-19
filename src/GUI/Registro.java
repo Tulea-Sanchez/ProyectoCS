@@ -214,6 +214,7 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JLabel textoIngresar;
     // End of variables declaration//GEN-END:variables
 
+    //FUNCION PARA DESPLEGAR VENTANA LOGIN
     public void login(){
         dispose();
         Login v = new Login();
@@ -221,19 +222,19 @@ public class Registro extends javax.swing.JFrame {
 
     }
     
+    //FUNCION PARA CONECTAR CON SERVIDOR Y REGISTRAR USUARIO
     public void Registrar(){
-        
+        //DECLARACION DE LOS DATOS INSERTADOS
         String nombre = entryRusuario.getText().toString();
         String passwd = entryRpasswd.getText().toString();
-        
+        //VERIFICACION QUE LOS DATOS NO SEAN VACIOS
         if (nombre != "" && passwd != ""){
-            
+            //CREACION DEL JSON ENVIADO AL SERVIDOR
             JSONObject JS = JSC.JsonRegistration(nombre,passwd);
-            //System.out.println("JS login "+cliente.sendSesion(JS.toString()));
-            
+            //ENVIA AL SERVIDOR Y ESPERA RESPUESTA PARA CONTINUAR
             if(cliente.sendSesion(JS.toString())){
                login();
-            }
+            }//SI EL SERVIDOR NO DIO CONEXION EXITOSA
             else {mensajeError.setEnabled(true);
             }
         }

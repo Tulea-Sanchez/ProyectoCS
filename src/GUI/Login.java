@@ -220,36 +220,41 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel textoIngresar1;
     // End of variables declaration//GEN-END:variables
 
+    //FUNCION PARA LOGEARSE
     public void login(){
         
+        //ALMACENAMIENTO DE LOS DATOS INGRESADOS
         String nombre = entryUsuario.getText();
         String passwd = entryContraseña.getText();
         JSONObject JS = JSC.Jsonlogin(nombre,passwd);
-        //System.out.println("JS login "+cliente.sendSesion(JS.toString()));
+        //ESPERANDO RESPUESTA DEL SERVIDOR PARA CONTINUAR
         if(cliente.sendSesion(JS.toString())){
             GuiPrincipal(JSC.JsonID(nombre,passwd));
         }
-        else {mensajeError.setEnabled(true);
-        System.out.println("validacion error login");
-        }
+        else {mensajeError.setEnabled(true);}
     }
     
+    //FUNCION PARA DESPLEGAR VENTANA DE REGISTRO
     public void registrar(){
         dispose();
         Registro v = new Registro();
         v.setVisible(true);
-
     }
     
+    //FUNCION PARA DESPLEGAR VENTANA PRINCIPAL LUEGO DE LOGEAR
     public void GuiPrincipal(JSONObject JS){
+        //CERRAR LA VENTANA ACTUAL
         dispose();
+        //CREAR LA VENTANA PRINCIPAL
         Principal v = new Principal();
         v.setVisible(true);
+        //TRANSMITIR LOS DATOS DEL USUARIO
         datos.setCod_usuario(cliente.idUsuario(JS.toString()));
         datos.setNombre(entryUsuario.getText());
         v.globales(datos);
     }
     
+    //FUNCION PARA CERRAR CORRECTAMENTE
     public void cerrarVentana(){
         System.exit(0);
     }

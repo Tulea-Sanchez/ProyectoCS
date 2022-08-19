@@ -20,6 +20,7 @@ import java.sql.Statement;
  */
 public class BDManager {
 
+    //DECLARACIONES
     private static Connection con = null;
     protected static final String driver = "com.mysql.jdbc.Driver";
     protected static final String user = "root";
@@ -40,6 +41,7 @@ public class BDManager {
 
     }
     
+    //INICIAR LOS COMPONENTES DE LA CONEXION
     public Connection Conexion() {
 
         con = null;
@@ -82,6 +84,7 @@ public class BDManager {
         
     }
     
+    //UTILIZAR PARA SELECCIONAR EN BD, LA TABLA, DONDE APLICAR EL WHERE Y DATO
     public static void select(String tabla,String variable,String dato){
         Boolean conclucion = false;
         try{

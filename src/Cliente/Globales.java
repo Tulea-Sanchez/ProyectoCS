@@ -10,14 +10,17 @@ package Cliente;
  */
 public class Globales {
     
+    //DELCARACIONES PARA TRANSFERIR DATOS ENTRE VENTANAS
     int usuario;
     String nombre;
     String cod_usuario;
     
+    //GET AND SET
     public int getUsuario() {
         return usuario;
     }
 
+    
     public void setUsuario(int usuario) {
         this.usuario = usuario;
     }

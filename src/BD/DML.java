@@ -49,7 +49,7 @@ public class DML {
         } catch(Exception e){}
         
     }
-    
+    //PRUBA DEL SELECT PARA PROBAR QUERY
     public static void select(String tabla,String variable,String dato){
         Boolean conclucion = false;
         try{

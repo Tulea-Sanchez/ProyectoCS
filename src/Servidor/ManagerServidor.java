@@ -92,38 +92,47 @@ static class ClientHandler implements Runnable{
     }
 }
 
-
+    //VERIFICAR QUE ACCION REQUIERE EL CLIENTE
     public static void action(String cadena){
-       
+        //GUARDAR LA CADENA JSON RECIBIDA Y CONVERTIRLA EN OBJETO JSON
         JSONObject JS = CreateString(cadena);
+        //SI REQUIERE LOGIN
         if (JS.get("action").equals("login")){
             login(JS);   
-        }    
+        }
+        //SI REQUIERE REGISTRAR
         else if (JS.get("action").equals("Registration")){
             Registration(JS);
         }
+        //SI REQUIERE LE ENVIEN LOS LIBRO
         else if (JS.get("action").equals("libros")){
             sendLibros();  
         }
+        //SI REQUIERE LE ENVIEN LAS REVISTAS
         else if (JS.get("action").equals("revistas")){
             sendRevistas(); 
         }
+        //SI REQUIERE OBTENER EL ID DEL USUARIO
         else if (JS.get("action").equals("id")){
             System.out.println("id action");
             idUsuario(JS); 
         }
+        //SI REQUIERE ALQUILAR UN LIBRO
         else if (JS.get("action").equals("alquilarLibros")){
             System.out.println("alquilar");
             statusAlquiler(JS); 
         }
+        //SI REQUIERE ALQUILAR UNA REVISTA
         else if (JS.get("action").equals("alquilarRevistas")){
             System.out.println("alquilar");
             statusAlquiler(JS); 
         }
+        //SI REQUIERE EL ENVIO DE LOS ALQUILERES
         else if (JS.get("action").equals("alquileres")){
             System.out.println("alquileres");
             sendAlquileres(JS); 
         }
+        //SI REQUIERE DEVOLVER UN LIBRO O REVISTA
         else if (JS.get("action").equals("devolver")){
             System.out.println("devolver");
             sendDevolver(JS); 
@@ -131,116 +140,134 @@ static class ClientHandler implements Runnable{
         
     }
     
-    
+    //ENVIA LOS DATOS A BDMANAGER PARA VERIFICAR Y ENVIAR RESPUESTA A CLIENTE
     public static void login(JSONObject JS){
         String resp = "404";
         String nombre = JS.get("user").toString();
         String passwd = JS.get("password").toString();
-        
+        //VERIFICAR SI LOS DATOS SON CORRECTOS
         if (verficiarLogin(nombre,passwd)){
             resp = "200";
         }
-        
+        //ENVIAR RESPUESTA AL CLIENTE
         out.println(resp);
         
     }
     
+    //FUNCION PRA VERIFICAR EL ID DE UN USUARIO
     public static void idUsuario(JSONObject JS){
         String resp = "404";
         String nombre = JS.get("user").toString();
         String passwd = JS.get("password").toString();
-        
+        //SE OBTIENEN EL ID DEL USUARIO
         resp = BuscaridUsuario(nombre,passwd);
-        
+        //SE DEVUELVE EL ID AL CLIENTE
         out.println(resp);
-        
-        
     }
-
+    
+    //FUNCION PARA REGISTRAR USUARIOS
     public static void Registration(JSONObject JS){
+        //SE DECLARA ERROR INICIALMENTE
         String resp = "404";
         String nombre = JS.get("user").toString();
         String passwd = JS.get("password").toString();
-        
+        //SI LOS DATOS SE INGRESAN CORRECTAMENTE SE DA ESTADO 200
         if (Registration(nombre,passwd)){
             resp = "200";
         }
-                
+        //SE ENVIA RESPUESTA AL SERVIDOR
         out.println(resp);
     }
     
+    //FUNCION PARA ALQUILAR
     public static void statusAlquiler(JSONObject JS){
+        //SE DECLARA ERROR INICIALMENTE
         String resp = "404";
-        
-        
+        //SI SE ACTUALIZA E INSERTAN LOS DATOS CORRECTAMENTE PASA A ESTADO 200
         if (Alquilar(JS)){
             resp = "200";
         }
-        System.out.println("Resputado alquilar "+resp);
+        //SE ENVIA RESPUESTA AL CLIENTE
         out.println(resp);
     }
     
+    //FUNCION PARA DEVOLVER LOS LIBROS DE LA BD
     public static void sendLibros(){
+        //SE CREA EL RESULTSET DE LOS DATOS EXTRAIDOS
         ResultSet datos = selectAll("libros");
+        //SE DECLARA CUANDO DATOS SE OBTUVIERON
         int size = countSelect("libros");
+        //SE DECLARA EL STRING JS
         String js;
+        //SE ENVIA AL CLIENTE CUANTOS DATOS RECIBIRA
         out.println(size);
+        
         try{
             
             do{
-               
+                //SE ALMACENAN LOS DATOS EXTRAIDOS
                 String id = datos.getString("id");
                 String nomb = datos.getString("nombre");
                 String edit = datos.getString("editorial");
                 String disp = datos.getString("disponible");
-                
+                //SE CREA EL STRING JSON PARA ENVIAR
                 js = CreateJsonLibros(id,nomb,edit,disp).toString();
-                
+                //SE ENVIAN LOS DATOS AL CLIENTE UNO A UNO
                 out.println(js);
                 
             }while (datos.next());
 
         }catch(Exception e){}
+        //SE VERIFICA QUE TODO FUE CORRECTO
         out.println("200");
-        
     }
     
+    //FUNCION PARA ENVIAR REVISTAS AL CLIENTE
     public static void sendRevistas(){
+        //SE DECLARA EL RESULT SET CON LOS DATOS EXTRAIDOS
         ResultSet datos = selectAll("revistas");
+        //SE DECLARA CUANTOS DATOS SE OBTUVIERON
         int size = countSelect("revistas");
+        //SE DELCARA UN STRIN JS
         String js;
+        //SE ENVIA AL CLIENTE CUANTOS DATOS SE LE ENVIARAN
         out.println(size);
         try{
             
             do{
-               
+                //SE ALMACENAN LOS DATOS EXTRAIDOS POR LINEA
                 String id = datos.getString("id");
                 String nomb = datos.getString("nombre");
                 String edit = datos.getString("editorial");
                 String volum = datos.getString("volumen");
                 String disp = datos.getString("disponible");
+                //SE CREA UN STRING JSON PARA ENVIAR
                 js = CreateJsonRevista(id,nomb,edit,volum,disp).toString();
+                //SE ENVIAN LOS DATOS AL CLIENTE
                 out.println(js);
                 
             }while (datos.next());
 
         }catch(Exception e){}
+        //SE VERIFICA QUE TODO FUE EXITOSO
         out.println("200");
         
     }
     
-    
+    //FUNCION PARA ENVIAR LOS ALQUILERES
     public static void sendAlquileres(JSONObject JS){
+        //SE DECLARA UN RESULT SET CON LOS DATOS DE LOS ALQUILERES DEL USUARIO
         ResultSet datos = selectAllalquileres("alquileres",JS.get("usuario").toString());
+        //SE OBTIENE LA CANTIDAD DE DATOS A ENVIAR
         int size = countSelectAlquileres("alquileres",JS.get("usuario").toString());
+        //DECLARACION DE UN STING JS
         String js;
-        //System.out.println("alquileres send size antes ");
+        //SE ENVIA AL CLIENTE CUANTOS DATOS RECIBIRA
         out.println(size);
-        //System.out.println("alquileres send id dspues size");
         try{
             
             do{
-               
+                //SE ALMACENAN LOS DATOS
                 String id = datos.getString("id");
                 System.out.println("alquileres send id "+id);
                 String nomb = datos.getString("nombre");
@@ -249,7 +276,9 @@ static class ClientHandler implements Runnable{
                 String user = datos.getString("usuario");
                 String tip = datos.getString("tipo");
                 String fecha = datos.getString("fecha");
+                //CREA JSON Y CONVIERTE A STRING PARA ENVIO
                 js = CreateJsonAlquileres(id,nomb,edit,volum,user,tip,fecha).toString();
+                //SE ENVIA EL STRING CON LOS DATOS AL CLIENTE
                 out.println(js);
                 
             }while (datos.next());
@@ -265,12 +294,16 @@ static class ClientHandler implements Runnable{
         
     }
     
+    //FUNCION PARA DEVOLVER LIBROS O REVISTAS
     public static void sendDevolver(JSONObject JS){
+        //SE DELCARA INCIADO COMO ERROR
         String resp = "404";
-
+        //SE VERIFICA SI LA ACTUALIZACION DE DATOS ES CORRECTA
         if (actionDevolver(JS)){
+            //SE CAMBIA EL ESTADO A CORRECTO
             resp = "200";
         }
+        //SE INFORMA AL SERVIDOR QUE TODO BIEN
         out.println(resp);
         
     }
