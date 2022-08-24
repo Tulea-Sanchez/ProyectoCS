@@ -74,7 +74,7 @@ public class Registro extends javax.swing.JFrame {
 
         mensajeError.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         mensajeError.setForeground(new java.awt.Color(255, 0, 0));
-        mensajeError.setText("El usuario ya existe ...");
+        mensajeError.setText("Error al registar, puede que el usuario ya existe ...");
         panelRegistro.add(mensajeError, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 400, 410, 20));
         mensajeError.setEnabled(false);
 
@@ -225,10 +225,10 @@ public class Registro extends javax.swing.JFrame {
     //FUNCION PARA CONECTAR CON SERVIDOR Y REGISTRAR USUARIO
     public void Registrar(){
         //DECLARACION DE LOS DATOS INSERTADOS
-        String nombre = entryRusuario.getText().toString();
-        String passwd = entryRpasswd.getText().toString();
+        String nombre = entryRusuario.getText();
+        String passwd = entryRpasswd.getText();
         //VERIFICACION QUE LOS DATOS NO SEAN VACIOS
-        if (nombre != "" && passwd != ""){
+        if (!nombre.equalsIgnoreCase("") && !passwd.equalsIgnoreCase("")){
             //CREACION DEL JSON ENVIADO AL SERVIDOR
             JSONObject JS = JSC.JsonRegistration(nombre,passwd);
             //ENVIA AL SERVIDOR Y ESPERA RESPUESTA PARA CONTINUAR
@@ -237,7 +237,7 @@ public class Registro extends javax.swing.JFrame {
             }//SI EL SERVIDOR NO DIO CONEXION EXITOSA
             else {mensajeError.setEnabled(true);
             }
-        }
+        }else {mensajeError.setEnabled(true);}
     }
     
 }

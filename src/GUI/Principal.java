@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
+import Cliente.Archivo;
 import Cliente.Globales;
 import Cliente.JsonManagerCliente;
 import Cliente.ManagerCliente;
@@ -13,12 +14,15 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.concurrent.TimeUnit;
 import Herencia.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 /**
  *
  * @author Tulea4ever
  */
-public final class Principal extends javax.swing.JFrame {
+public final class Principal extends javax.swing.JFrame implements Archivo{
     
     private String codigoUsuario,action;
     private Globales datos = new Globales();
@@ -447,8 +451,8 @@ public void apagarPaneles(){
 }
 
 //FUNCION PARA IGUALAR DATOS DE GLOBALES CON EL LOGIN
-public void globales(Globales x){
-    datos = x;
+public void globales(){
+    leerArchivo();
     Label_nombre.setText(datos.getNombre());  
 }
 
@@ -572,7 +576,7 @@ public void alquilar(String action){
                 revistas();
         }
         
-    }catch(Exception e){}
+    }catch(Exception e){JOptionPane.showMessageDialog(null, "Seleccione una fila a alquilar");}
 }
 
 //FUNCION PARA EL BOTON DE DEVOLVER
@@ -607,11 +611,48 @@ public void actionDevolver(){
                 revistas();
         }
         
-    }catch(Exception e){}
+    }catch(Exception e){JOptionPane.showMessageDialog(null, "Seleccione una fila a devolver");}
 }
 
+    //POLIFORMISMO INTERFACE
+    @Override
+    public void leerArchivo(){
+        //DECLARACION DE VARIABLES NECESARIAS
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
 
+        try {//DECLARACION DE LA RUTA DE NUESTRO ARCHIVO
+            String ruta = "..\\globales.txt";
+            archivo = new File (ruta);
+            fr = new FileReader (archivo);
+            br = new BufferedReader(fr);
 
+            //LECTURA DEL ARCHIVO
+            int vuelta = 0;
+            while((br.readLine())!=null)
+                //INSERTAR LOS DATOS RECOLECTADOS EN LA INTERFACE GRAFICA
+                if (vuelta == 1){
+                    datos.setNombre(br.readLine());
+                }else{datos.setNombre(br.readLine());}
+            vuelta++;
+        }
+        catch(Exception e){
+           e.printStackTrace();
+        }finally{//CERRAR ARCHIVO SI O SI
+           
+           try{                    
+              if( null != fr ){   
+                 fr.close();     
+              }                  
+           }catch (Exception e2){ 
+              e2.printStackTrace();
+           }
+      }
+    }
+    //POLIFORMISMO INTERFACE
+    @Override
+    public void crearArchivo(){}
 }
 
 

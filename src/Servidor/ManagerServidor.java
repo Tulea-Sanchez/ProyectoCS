@@ -137,6 +137,11 @@ static class ClientHandler implements Runnable{
             System.out.println("devolver");
             sendDevolver(JS); 
         }
+        //SI EL SERVIDOR ESTA ACTIVO
+        else if (JS.get("action").equals("estado")){
+            System.out.println("estado");
+            estado();
+        }
         
     }
     
@@ -305,6 +310,13 @@ static class ClientHandler implements Runnable{
         }
         //SE INFORMA AL SERVIDOR QUE TODO BIEN
         out.println(resp);
+        
+    }
+    
+    //FUNCION PARA SERVIDOR EN LINEA
+    public static void estado(){
+        
+        out.println("200");
         
     }
         

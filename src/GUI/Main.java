@@ -3,14 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package GUI;
-
+import Cliente.estadoServidor;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
 /**
  *
  * @author Tulea4ever
  */
-public class Main {
+public class Main extends estadoServidor{
+        
     
-   public static void main(String args[]) {
+    public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -35,11 +43,14 @@ public class Main {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
+        if (estadoServidor()){
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+
+                    new Login().setVisible(true);
+                }
+            });
+        }
     }
-    
+        
 }

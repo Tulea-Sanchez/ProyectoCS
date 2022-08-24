@@ -13,7 +13,7 @@ import Herencia.*;
 public class JsonManagerCliente {
 
     //CREAR JSON PARA LOGIN 
-    public static String CreateString(String user, String passwd) {
+    public static String CreateString (String user, String passwd) {
         
         String json = "{\"user\":+user+,\"pass\":+passwd}"; 
         
@@ -21,10 +21,8 @@ public class JsonManagerCliente {
     }
     
     
-    
-    
     //CONVERIR UNA CADENA EN FORMATO JSON A UN OBJETO JSON
-    public static JSONObject StringJson(String cadena){
+    public JSONObject StringJson(String cadena){
         
         JSONObject objetoJson = null;
         JSONParser parser = new JSONParser();

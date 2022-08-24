@@ -6,7 +6,6 @@ package Servidor;
  */
 
 //import java.sql.*;
-import BD.*;
 
 import com.mysql.jdbc.Connection;
 

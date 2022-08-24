@@ -6,11 +6,12 @@ package GUI;
 import Cliente.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import java.io.*;
 /**
  *
  * @author Tulea4ever
  */
-public class Login extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame implements Archivo{
     
     ManagerCliente cliente = new ManagerCliente();
     JsonManagerCliente JSC = new JsonManagerCliente();
@@ -243,19 +244,55 @@ public class Login extends javax.swing.JFrame {
     
     //FUNCION PARA DESPLEGAR VENTANA PRINCIPAL LUEGO DE LOGEAR
     public void GuiPrincipal(JSONObject JS){
+        
         //CERRAR LA VENTANA ACTUAL
         dispose();
         //CREAR LA VENTANA PRINCIPAL
         Principal v = new Principal();
         v.setVisible(true);
         //TRANSMITIR LOS DATOS DEL USUARIO
-        datos.setCod_usuario(cliente.idUsuario(JS.toString()));
+        //datos.setCod_usuario(cliente.idUsuario(JS.toString()));
         datos.setNombre(entryUsuario.getText());
-        v.globales(datos);
+        crearArchivo();
+        v.globales();
     }
     
     //FUNCION PARA CERRAR CORRECTAMENTE
     public void cerrarVentana(){
         System.exit(0);
     }
+    
+    
+    //POLIFORMISMO INTERFACE
+    @Override
+    public void crearArchivo(){
+        
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {   //CREAR LA RUTA DONDE SE ENCUENTRA NUESTRO ARCHIVO
+            String ruta = "..\\globales.txt";
+            fichero = new FileWriter(ruta);
+            pw = new PrintWriter(fichero);
+            //INSERTARLE LOS DATOS AL ARCHIVO
+            pw.println(datos.getCod_usuario());
+            pw.println(datos.getNombre());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {//CERRAR SI O SI EL ARCHIVO
+               if (null != fichero)
+                fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+       
+    }
+    }
+    
+    //POLIFORMISMO INTERFACE
+    @Override
+    public void leerArchivo(){}
+
 }
