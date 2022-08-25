@@ -100,7 +100,7 @@
             <Component class="javax.swing.JButton" name="BotonIngresar">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Tulea4ever\Downloads\register.png"/>
+                  <Image iconType="3" name="/Icons/register.png"/>
                 </Property>
               </Properties>
               <Events>

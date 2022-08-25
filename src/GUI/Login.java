@@ -71,13 +71,13 @@ public class Login extends javax.swing.JFrame implements Archivo{
         });
         panelLogin.add(entryUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 410, 410, 60));
 
-        logoUser1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Tulea4ever\\Downloads\\logo user.png")); // NOI18N
+        logoUser1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/logo user.png"))); // NOI18N
         panelLogin.add(logoUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, -1, -1));
 
-        LogoPasswd1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Tulea4ever\\Downloads\\logoPasswd.png")); // NOI18N
+        LogoPasswd1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/logoPasswd.png"))); // NOI18N
         panelLogin.add(LogoPasswd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 490, -1, -1));
 
-        BotonIngresar.setIcon(new javax.swing.ImageIcon("C:\\Users\\Tulea4ever\\Downloads\\login.png")); // NOI18N
+        BotonIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login.png"))); // NOI18N
         BotonIngresar.setOpaque(false);
         BotonIngresar.setContentAreaFilled(false);
         BotonIngresar.setBorderPainted(false);

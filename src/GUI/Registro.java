@@ -56,7 +56,7 @@ public class Registro extends javax.swing.JFrame {
         entryRpasswd.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         panelRegistro.add(entryRpasswd, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 330, 40));
 
-        BotonIngresar.setIcon(new javax.swing.ImageIcon("C:\\Users\\Tulea4ever\\Downloads\\register.png")); // NOI18N
+        BotonIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/register.png"))); // NOI18N
         BotonIngresar.setOpaque(false);
         BotonIngresar.setContentAreaFilled(false);
         BotonIngresar.setBorderPainted(false);

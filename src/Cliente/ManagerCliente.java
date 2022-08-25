@@ -95,7 +95,7 @@ public class ManagerCliente extends JsonManagerCliente{
             }
             
         }catch(Exception e){JOptionPane.showMessageDialog(null, "Error al "
-                + "enviAR idUsuario MC");}
+                + "enviar idUsuario MC");}
         
         return status;
     }
